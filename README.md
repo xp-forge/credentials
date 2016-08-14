@@ -19,7 +19,7 @@ use security\vault\Vault;
 use security\vault\FromEnvironment;
 
 $vault= new Vault(new FromEnvironment());
-$secret= $vault->credential('ldap_password');   // Reads $ENV{LDAP_PASSWORD} => util.Secret```
+$secret= $vault->credential('ldap_password');   // Reads $ENV{LDAP_PASSWORD} => util.Secret
 ```
 
 See also

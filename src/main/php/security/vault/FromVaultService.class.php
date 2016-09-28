@@ -56,9 +56,7 @@ class FromVaultService implements Secrets {
   public function all($pattern) {
     $p= strrpos($pattern, '/');
     $response= $this->endpoint->resource('/v1/secret/'.substr($pattern, 0, $p))->get();
-    if ($response->isError()) {
-      return null;
-    } else {
+    if (!$response->isError()) {
       $key= ltrim(substr($pattern, $p), '/');
       $match= substr($key, 0, strrpos($key, '*'));
       foreach ($response->data()['data'] as $name => $value) {

@@ -8,6 +8,7 @@ use webservices\rest\RestResponse;
 use peer\http\HttpResponse;
 use io\streams\MemoryInputStream;
 use peer\URL;
+use lang\FormatException;
 
 class FromVaultServiceTest extends AbstractSecretsTest {
 
@@ -49,11 +50,6 @@ class FromVaultServiceTest extends AbstractSecretsTest {
     ]));
   }
 
-  #[@test]
-  public function can_create() {
-    new FromVaultService();
-  }
-
   #[@test, @values([
   #  ['http://vault:8200'],
   #  [new URL('http://vault:8200')],
@@ -61,5 +57,17 @@ class FromVaultServiceTest extends AbstractSecretsTest {
   #])]
   public function can_create_with($arg) {
     new FromVaultService($arg);
+  }
+
+  #[@test]
+  public function uses_environment_variable_by_default() {
+    putenv('VAULT_ADDR=http://127.0.0.1:8200');
+    new FromVaultService();
+  }
+
+  #[@test, @expect(FormatException::class)]
+  public function fails_if_environment_variable_missing() {
+    putenv('VAULT_ADDR=');
+    new FromVaultService();
   }
 }

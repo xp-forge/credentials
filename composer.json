@@ -1,9 +1,9 @@
 {
-  "name" : "xp-forge/vault",
+  "name" : "xp-forge/credentials",
   "type" : "library",
   "homepage" : "http://xp-framework.net/",
   "license" : "BSD-3-Clause",
-  "description" : "Vault",
+  "description" : "Credentials",
   "keywords": ["module", "xp"],
   "require" : {
     "xp-framework/core": "^8.0 | ^7.0 | ^6.5",

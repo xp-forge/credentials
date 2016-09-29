@@ -3,7 +3,7 @@
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
 
-class Vault implements \lang\Closeable {
+class Credentials implements \lang\Closeable {
   private $secrets;
   private $open= false;
 

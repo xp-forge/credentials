@@ -42,7 +42,7 @@ class Credentials implements \lang\Closeable {
    * @return util.Secret
    * @throws lang.ElementNotFoundException
    */
-  public function credential($name) {
+  public function named($name) {
     foreach ($this->open()->secrets as $secrets) {
       if (null !== ($secret= $secrets->named($name))) return $secret;
     }
@@ -55,7 +55,7 @@ class Credentials implements \lang\Closeable {
    * @param  string $pattern Name with * meaning any character except a dot
    * @return php.Generator
    */
-  public function credentials($pattern) {
+  public function all($pattern) {
     foreach ($this->open()->secrets as $secrets) {
       foreach ($secrets->all($pattern) as $name => $secret) {
         yield $name => $secret;

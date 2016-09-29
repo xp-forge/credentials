@@ -33,7 +33,7 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $this->assertEquals($secret, $credentials->credential('test'));
+    $this->assertEquals($secret, $credentials->named('test'));
   }
 
   #[@test]
@@ -46,7 +46,7 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $this->assertEquals(['test' => $secret], iterator_to_array($credentials->credentials('test')));
+    $this->assertEquals(['test' => $secret], iterator_to_array($credentials->all('test')));
   }
 
   #[@test, @expect(ElementNotFoundException::class)]
@@ -58,6 +58,6 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $credentials->credential('test');
+    $credentials->named('test');
   }
 }

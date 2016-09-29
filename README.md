@@ -15,12 +15,22 @@ Example
 -------
 
 ```php
-use security\credentials\Credentials;
-use security\credentials\FromEnvironment;
+use security\credentials\{Credentials, FromEnvironment, FromVault};
 
 $credentials= new Credentials(new FromEnvironment());
-$secret= $credentials->credential('ldap_password');   // Reads $ENV{LDAP_PASSWORD} => util.Secret
+$secret= $credentials->named('ldap_password');   // Reads $ENV{LDAP_PASSWORD} => util.Secret
+
+$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', '72698676-4988-94a4-...'));
+$secret= $credentials->named('ldap_password');   // Reads ldap_password from /secret
 ```
+
+Backends
+--------
+This API supports multiple backends:
+
+* **Environment variables** via the `FromEnvironment` class.
+* **Files**  via the `FromFile` class.
+* **Hashicorp's Vault** via the `FromVault` class.
 
 See also
 --------

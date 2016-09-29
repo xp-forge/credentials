@@ -1,6 +1,6 @@
-<?php namespace security\vault\unittest;
+<?php namespace security\credentials\unittest;
 
-use security\vault\FromStream;
+use security\credentials\FromStream;
 use util\Secret;
 use io\File;
 use io\streams\MemoryInputStream;

@@ -1,4 +1,4 @@
-<?php namespace security\vault;
+<?php namespace security\credentials;
 
 use io\streams\LinesIn;
 use util\Secret;

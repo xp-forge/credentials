@@ -1,7 +1,7 @@
-<?php namespace security\vault\unittest;
+<?php namespace security\credentials\unittest;
 
-use security\vault\Credentials;
-use security\vault\Secrets;
+use security\credentials\Credentials;
+use security\credentials\Secrets;
 use util\Secret;
 use lang\IllegalArgumentException;
 use lang\ElementNotFoundException;

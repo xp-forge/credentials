@@ -1,4 +1,4 @@
-<?php namespace security\vault\unittest;
+<?php namespace security\credentials\unittest;
 
 abstract class AbstractSecretsTest extends \unittest\TestCase {
 

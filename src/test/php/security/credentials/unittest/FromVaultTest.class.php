@@ -1,6 +1,6 @@
-<?php namespace security\vault\unittest;
+<?php namespace security\credentials\unittest;
 
-use security\vault\FromVault;
+use security\credentials\FromVault;
 use util\Secret;
 use webservices\rest\Endpoint;
 use webservices\rest\RestRequest;

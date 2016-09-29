@@ -1,4 +1,4 @@
-<?php namespace security\vault;
+<?php namespace security\credentials;
 
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
@@ -9,7 +9,7 @@ class Credentials implements \lang\Closeable {
 
   /**
    *
-   * @param  security.vault.Secrets... $secrets
+   * @param  security.credentials.Secrets... $secrets
    * @throws lang.IllegalArgumentException
    */
   public function __construct(...$secrets) {
@@ -17,7 +17,7 @@ class Credentials implements \lang\Closeable {
       throw new IllegalArgumentException('Secrets cannot be empty');
     }
 
-    $this->secrets= cast($secrets, 'security.vault.Secrets[]');
+    $this->secrets= cast($secrets, 'security.credentials.Secrets[]');
   }
 
   /**

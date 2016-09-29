@@ -1,6 +1,6 @@
-<?php namespace security\vault\unittest;
+<?php namespace security\credentials\unittest;
 
-use security\vault\FromEnvironment;
+use security\credentials\FromEnvironment;
 use util\Secret;
 use lang\Environment;
 

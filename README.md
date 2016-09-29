@@ -11,28 +11,21 @@ Credentials
 
 Credentials storage
 
-Example
--------
-
-```php
-use security\credentials\{Credentials, FromEnvironment, FromVault};
-
-$credentials= new Credentials(new FromEnvironment());
-$secret= $credentials->named('ldap_password');   // Reads $ENV{LDAP_PASSWORD} => util.Secret
-
-$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', '72698676-4988-94a4-...'));
-$secret= $credentials->named('ldap_password');   // Reads ldap_password from /secret
-```
-
 Backends
 --------
 This API supports multiple backends:
 
 ### Environment variables
 
-Via the `FromEnvironment` class. Credential names map to environment variables as follows:
+Via the `FromEnvironment` class. Credential names map to environment variables by uppercasing them and replacing forward slashes by two underscores:
 
-* The credential name is uppercased
+```php
+use security\credentials\{Credentials, FromEnvironment};
+
+$credentials= new Credentials(new FromEnvironment());
+$secret= $credentials->named('ldap_password');     // Reads $ENV{LDAP_PASSWORD} => util.Secret
+$secret= $credentials->named('vendor/name/mysql'); // Reads $ENV{VENDOR__NAME__MYSQL} => util.Secret
+```
 
 ### Files
 
@@ -46,6 +39,13 @@ ldap_password=qwertzu
 ### Hashicorp's Vault
 
 Via the `FromVault` class. Credentials are read from the backend mounted at `/secret`.
+
+```php
+use security\credentials\{Credentials, FromVault};
+
+$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', '72698676-4988-94a4-...'));
+$secret= $credentials->named('ldap_password');   // Reads ldap_password from /secret
+```
 
 See also
 --------

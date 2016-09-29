@@ -28,8 +28,9 @@ class FromEnvironment implements Secrets {
    * @return util.Secret
    */
   public function named($name) {
-    $name= strtoupper($name);
+    $name= strtoupper(strtr($name, ['/' => '__']));
     if (null === ($value= Environment::variable($name, null))) return null;
+
     $this->remove && $this->unset[$name]= null;
     return new Secret($value);
   }
@@ -41,9 +42,9 @@ class FromEnvironment implements Secrets {
    * @return php.Generator
    */
   public function all($pattern) {
-    $match= strtoupper(substr($pattern, 0, strrpos($pattern, '*')));
+    $match= strtoupper(strtr(substr($pattern, 0, strrpos($pattern, '*')), ['/' => '__']));
     foreach ($_ENV as $name => $value) {
-      if (0 === strncmp($name, $match, strlen($match))) yield strtolower($name) => new Secret($value);
+      if (0 === strncmp($name, $match, strlen($match))) yield strtr(strtolower($name), ['__' => '/']) => new Secret($value);
     }
   }
 

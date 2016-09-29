@@ -32,4 +32,24 @@ class FromEnvironmentTest extends AbstractSecretsTest {
     $after= Environment::variable('TEST_DB_PASSWORD', null);
     $this->assertEquals(['db', null], [$before, $after]);
   }
+
+  #[@test]
+  public function forward_slashes_are_replaced_by_double_underscores_in_named() {
+    Environment::export(['XP__APP__MYSQL' => 'test']);
+    try {
+      $this->assertEquals('test', (new FromEnvironment())->named('xp/app/mysql')->reveal());
+    } finally {
+      Environment::export(['XP__APP__MYSQL' => null]);
+    }
+  }
+
+  #[@test]
+  public function forward_slashes_are_replaced_by_double_underscores_in_all() {
+    Environment::export(['XP__APP__MYSQL' => 'test']);
+    try {
+      $this->assertEquals('test', iterator_to_array((new FromEnvironment())->all('xp/app/*'))['xp/app/mysql']->reveal());
+    } finally {
+      Environment::export(['XP__APP__MYSQL' => null]);
+    }
+  }
 }

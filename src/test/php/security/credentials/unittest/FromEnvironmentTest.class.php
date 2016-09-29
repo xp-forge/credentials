@@ -37,7 +37,7 @@ class FromEnvironmentTest extends AbstractSecretsTest {
   public function forward_slashes_are_replaced_by_double_underscores_in_named() {
     Environment::export(['XP__APP__MYSQL' => 'test']);
     try {
-      $this->assertEquals('test', (new FromEnvironment())->named('xp/app/mysql')->reveal());
+      $this->assertCredential('test', 'xp/app/mysql');
     } finally {
       Environment::export(['XP__APP__MYSQL' => null]);
     }

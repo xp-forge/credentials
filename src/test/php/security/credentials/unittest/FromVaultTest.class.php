@@ -15,7 +15,9 @@ class FromVaultTest extends AbstractSecretsTest {
   // Mapping test name => array of answers
   private static $answers= [
     'credential'              => [
-      ['data' => ['test_db_password' => 'db']]
+      ['data' => ['test_db_password' => 'db']],
+      ['data' => ['test_ldap_password' => 'ldap']],
+      ['data' => ['prod_master_key' => 'master']]
     ],
     'non_existant_credential' => [
       null

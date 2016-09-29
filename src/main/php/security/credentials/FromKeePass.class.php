@@ -3,6 +3,7 @@
 use info\keepass\KeePassDatabase;
 use info\keepass\Key;
 use util\Secret;
+use io\File;
 
 class FromKeePass implements Secrets {
 

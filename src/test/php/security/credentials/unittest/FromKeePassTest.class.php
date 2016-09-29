@@ -16,26 +16,11 @@ class FromKeePassTest extends AbstractSecretsTest {
 
   #[@test]
   public function from_subfolder() {
-    $fixture= $this->newFixture();
-    $fixture->open();
-    try {
-      $this->assertEquals('test', $fixture->named('xp/app/mysql')->reveal());
-    } finally {
-      $fixture->close();
-    }
+    $this->assertCredential('test', 'xp/app/mysql');
   }
 
   #[@test]
   public function all_in_subfolder() {
-    $fixture= $this->newFixture();
-    $fixture->open();
-    try {
-      $this->assertEquals(['xp/app/mysql' => 'test'], array_map(
-        function($s) { return $s->reveal(); },
-        iterator_to_array($fixture->all('xp/app/*'))
-      ));
-    } finally {
-      $fixture->close();
-    }
+    $this->assertCredentials(['xp/app/mysql' => 'test'], 'xp/app/*');
   }
 }

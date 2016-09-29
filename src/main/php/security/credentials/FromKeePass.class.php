@@ -38,8 +38,8 @@ class FromKeePass implements Secrets {
       $match= substr($name, $p + 1);
     }
     
-    foreach ($this->db->group($group)->passwords() as $title => $value) {
-      if ($title === $match) return new Secret((string)$value);
+    foreach ($this->db->group($group)->passwords() as $path => $value) {
+      if (basename($path) === $match) return new Secret((string)$value);
     }
     return null;
   }
@@ -59,8 +59,8 @@ class FromKeePass implements Secrets {
       $match= substr($pattern, $p + 1, strrpos($pattern, '*') - $p - 1);
     }
     
-    foreach ($this->db->group($group)->passwords() as $title => $value) {
-      if (0 === strncmp($title, $match, strlen($match))) yield ltrim($group.'/'.$title, '/') => new Secret((string)$value);
+    foreach ($this->db->group($group)->passwords() as $path => $value) {
+      if (0 === strncmp(basename($path), $match, strlen($match))) yield substr($path, 1) => new Secret((string)$value);
     }
   }
 

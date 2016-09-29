@@ -12,7 +12,12 @@ Credentials storage
 
 Backends
 --------
-This API supports multiple backends:
+This API supports the following backends:
+
+* [Files](https://github.com/xp-forge/credentials#files)
+* [Environment variables](https://github.com/xp-forge/credentials#environment-variables)
+* [Hashicorp's Vault](https://github.com/xp-forge/credentials#hashicorps-vault) 
+* [KeePass databases](https://github.com/xp-forge/credentials#keepass-databases)
 
 ### Files
 
@@ -53,6 +58,7 @@ Via the `KeePass` class.
 
 ```php
 use security\credentials\{Credentials, FromKeePass};
+use util\Secret;
 
 $credentials= new Credentials(new FromKeePass('database.kdbx', new Secret('key')));
 $secret= $credentials->named('ldap_password');     // Reads top-level entry ldap_password

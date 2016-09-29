@@ -48,6 +48,20 @@ $secret= $credentials->named('ldap_password');     // Reads ldap_password key fr
 $secret= $credentials->named('vendor/name/mysql'); // Reads mysql key from /secret/vendor/name
 ```
 
+### KeePass databases
+
+Via the `KeePass` class.
+
+```php
+use security\credentials\{Credentials, FromVault};
+
+$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', '72698676-4988-94a4-...'));
+$secret= $credentials->named('ldap_password');     // Reads ldap_password key from /secret
+$secret= $credentials->named('vendor/name/mysql'); // Reads mysql key from /secret/vendor/name
+```
+
+
+
 See also
 --------
 https://github.com/xp-framework/rfc/issues/316

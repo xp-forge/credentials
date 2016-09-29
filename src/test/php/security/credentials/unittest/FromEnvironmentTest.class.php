@@ -11,7 +11,12 @@ class FromEnvironmentTest extends AbstractSecretsTest {
 
   /** @return void */
   public function setUp() {
-    Environment::export(['TEST_DB_PASSWORD' => 'db', 'TEST_LDAP_PASSWORD' => 'ldap', 'PROD_MASTER_KEY' => 'master']);
+    Environment::export([
+      'TEST_DB_PASSWORD'   => 'db',
+      'TEST_LDAP_PASSWORD' => 'ldap',
+      'PROD_MASTER_KEY'    => 'master',
+      'XP__APP__MYSQL'     => 'test'
+    ]);
   }
 
   #[@test]
@@ -35,21 +40,11 @@ class FromEnvironmentTest extends AbstractSecretsTest {
 
   #[@test]
   public function forward_slashes_are_replaced_by_double_underscores_in_named() {
-    Environment::export(['XP__APP__MYSQL' => 'test']);
-    try {
-      $this->assertCredential('test', 'xp/app/mysql');
-    } finally {
-      Environment::export(['XP__APP__MYSQL' => null]);
-    }
+    $this->assertCredential('test', 'xp/app/mysql');
   }
 
   #[@test]
   public function forward_slashes_are_replaced_by_double_underscores_in_all() {
-    Environment::export(['XP__APP__MYSQL' => 'test']);
-    try {
-      $this->assertEquals('test', iterator_to_array((new FromEnvironment())->all('xp/app/*'))['xp/app/mysql']->reveal());
-    } finally {
-      Environment::export(['XP__APP__MYSQL' => null]);
-    }
+    $this->assertCredentials(['xp/app/mysql' => 'test'], 'xp/app/*');
   }
 }

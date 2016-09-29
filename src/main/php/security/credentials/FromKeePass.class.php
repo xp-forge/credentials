@@ -61,7 +61,6 @@ class FromKeePass implements Secrets {
     foreach ($this->db->group($group)->passwords() as $title => $value) {
       if (0 === strncmp($title, $match, strlen($match))) yield ltrim($group.'/'.$title, '/') => new Secret((string)$value);
     }
-    return null;
   }
 
   /** @return void */

@@ -1,6 +1,6 @@
 <?php namespace security\vault\unittest;
 
-use security\vault\FromVaultService;
+use security\vault\FromVault;
 use util\Secret;
 use webservices\rest\Endpoint;
 use webservices\rest\RestRequest;
@@ -10,7 +10,7 @@ use io\streams\MemoryInputStream;
 use peer\URL;
 use lang\FormatException;
 
-class FromVaultServiceTest extends AbstractSecretsTest {
+class FromVaultTest extends AbstractSecretsTest {
 
   // Mapping test name => array of answers
   private static $answers= [
@@ -29,7 +29,7 @@ class FromVaultServiceTest extends AbstractSecretsTest {
   /** @return security.vault.Secrets */
   protected function newFixture() {
     $answers= &self::$answers[$this->getName()];
-    return new FromVaultService(newinstance(Endpoint::class, [], [
+    return new FromVault(newinstance(Endpoint::class, [], [
       '__construct' => function() {
         parent::__construct('http://test');
       },
@@ -56,18 +56,18 @@ class FromVaultServiceTest extends AbstractSecretsTest {
   #  [new Endpoint('http://vault:8200')]
   #])]
   public function can_create_with($arg) {
-    new FromVaultService($arg);
+    new FromVault($arg);
   }
 
   #[@test]
   public function uses_environment_variable_by_default() {
     putenv('VAULT_ADDR=http://127.0.0.1:8200');
-    new FromVaultService();
+    new FromVault();
   }
 
   #[@test, @expect(FormatException::class)]
   public function fails_if_environment_variable_missing() {
     putenv('VAULT_ADDR=');
-    new FromVaultService();
+    new FromVault();
   }
 }

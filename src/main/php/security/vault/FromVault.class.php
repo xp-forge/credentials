@@ -3,7 +3,7 @@
 use webservices\rest\Endpoint;
 use util\Secret;
 
-class FromVaultService implements Secrets {
+class FromVault implements Secrets {
   private $endpoint;
 
   /**

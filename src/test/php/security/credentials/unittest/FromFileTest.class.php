@@ -13,7 +13,8 @@ class FromFileTest extends AbstractSecretsTest {
     return new FromFile(Streams::readableFd(new MemoryInputStream(
       "TEST_DB_PASSWORD=db\n".
       "TEST_LDAP_PASSWORD=ldap\n".
-      "PROD_MASTER_KEY=master"
+      "PROD_MASTER_KEY=master\n".
+      "XP/APP/MYSQL=test"
     )));
   }
 

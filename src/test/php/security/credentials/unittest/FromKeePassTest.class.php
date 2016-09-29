@@ -13,14 +13,4 @@ class FromKeePassTest extends AbstractSecretsTest {
       new Secret('test')
     );
   }
-
-  #[@test]
-  public function from_subfolder() {
-    $this->assertCredential('test', 'xp/app/mysql');
-  }
-
-  #[@test]
-  public function all_in_subfolder() {
-    $this->assertCredentials(['xp/app/mysql' => 'test'], 'xp/app/*');
-  }
 }

@@ -14,7 +14,7 @@ class FromVaultTest extends AbstractSecretsTest {
 
   // Mapping test name => array of answers
   private static $answers= [
-    'credential'              => [
+    'credential' => [
       ['data' => ['test_db_password' => 'db']],
       ['data' => ['test_ldap_password' => 'ldap']],
       ['data' => ['prod_master_key' => 'master']]
@@ -22,10 +22,16 @@ class FromVaultTest extends AbstractSecretsTest {
     'non_existant_credential' => [
       null
     ],
-    'credentials'             => [
+    'credentials' => [
       ['data' => ['test_db_password' => 'db', 'test_ldap_password' => 'ldap']],
       ['data' => ['prod_master_key' => 'master']]
     ],
+    'from_subfolder' => [
+      ['data' => ['mysql' => 'test']],
+    ],
+    'all_in_subfolder' => [
+      ['data' => ['mysql' => 'test']],
+    ]
   ];
 
   /** @return security.vault.Secrets */

@@ -55,12 +55,13 @@ class FromVault implements Secrets {
    */
   public function all($pattern) {
     $p= strrpos($pattern, '/');
-    $response= $this->endpoint->resource('/v1/secret/'.substr($pattern, 0, $p))->get();
+    $group= substr($pattern, 0, $p);
+    $response= $this->endpoint->resource('/v1/secret/'.$group)->get();
     if (!$response->isError()) {
       $key= ltrim(substr($pattern, $p), '/');
       $match= substr($key, 0, strrpos($key, '*'));
       foreach ($response->data()['data'] as $name => $value) {
-        if (0 === strncmp($name, $match, strlen($match))) yield $name => new Secret($value);
+        if (0 === strncmp($name, $match, strlen($match))) yield ltrim($group.'/'.$name, '/') => new Secret($value);
       }
     }
   }

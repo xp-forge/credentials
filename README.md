@@ -15,6 +15,15 @@ Backends
 --------
 This API supports multiple backends:
 
+### Files
+
+Via the `FromFile` class. Files are expected to have the following format:
+
+```
+rest_password=abcdefg
+ldap_password=qwertzu
+```
+
 ### Environment variables
 
 Via the `FromEnvironment` class. Credential names map to environment variables by uppercasing them and replacing forward slashes by two underscores:
@@ -25,15 +34,6 @@ use security\credentials\{Credentials, FromEnvironment};
 $credentials= new Credentials(new FromEnvironment());
 $secret= $credentials->named('ldap_password');     // Reads $ENV{LDAP_PASSWORD} => util.Secret
 $secret= $credentials->named('vendor/name/mysql'); // Reads $ENV{VENDOR__NAME__MYSQL} => util.Secret
-```
-
-### Files
-
-Via the `FromFile` class. Files are expected to have the following format:
-
-```
-rest_password=abcdefg
-ldap_password=qwertzu
 ```
 
 ### Hashicorp's Vault

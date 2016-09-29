@@ -37,14 +37,4 @@ class FromEnvironmentTest extends AbstractSecretsTest {
     $after= Environment::variable('TEST_DB_PASSWORD', null);
     $this->assertEquals(['db', null], [$before, $after]);
   }
-
-  #[@test]
-  public function forward_slashes_are_replaced_by_double_underscores_in_named() {
-    $this->assertCredential('test', 'xp/app/mysql');
-  }
-
-  #[@test]
-  public function forward_slashes_are_replaced_by_double_underscores_in_all() {
-    $this->assertCredentials(['xp/app/mysql' => 'test'], 'xp/app/*');
-  }
 }

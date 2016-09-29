@@ -11,9 +11,10 @@ class FromStreamTest extends AbstractSecretsTest {
   /** @return security.vault.Secrets */
   protected function newFixture() {
     return new FromStream(new MemoryInputStream(
-      "TEST_DB_PASSWORD=db\n".
-      "TEST_LDAP_PASSWORD=ldap\n".
-      "PROD_MASTER_KEY=master"
+      "test_db_password=db\n".
+      "test_ldap_password=ldap\n".
+      "prod_master_key=master\n".
+      "xp/app/mysql=test"
     ));
   }
 

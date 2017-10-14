@@ -6,13 +6,13 @@
   "description" : "Credentials",
   "keywords": ["module", "xp"],
   "require" : {
-    "xp-framework/core": "^8.0 | ^7.0 | ^6.5",
-    "xp-framework/rest": "^8.1",
-    "xp-forge/keepass": "^0.5",
+    "xp-framework/core": "^9.0 | ^8.0 | ^7.0 | ^6.5",
+    "xp-framework/rest": "^9.0 | ^8.1",
+    "xp-forge/keepass": "^0.6 | ^0.5",
     "php" : ">=5.6.0"
   },
   "require-dev" : {
-    "xp-framework/unittest": "^7.0 | ^6.5"
+    "xp-framework/unittest": "^9.0 | ^8.0 | ^7.0 | ^6.5"
   },
   "autoload" : {
     "files" : ["src/main/php/autoload.php"]

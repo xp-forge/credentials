@@ -1,6 +1,10 @@
 Credentials change log
 ======================
 
+## 0.4.0 / 2018-01-12
+
+* Implemented PR #3: Implement support for Docker Secrets - @thekid
+
 ## 0.3.0 / 2017-10-14
 
 * Added XP9 compatibility - @thekid

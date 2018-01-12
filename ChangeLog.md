@@ -1,6 +1,10 @@
 Credentials change log
 ======================
 
+## 0.4.1 / 2018-01-12
+
+* Ignored trailing newlines in docker secret files - @thekid
+
 ## 0.4.0 / 2018-01-12
 
 * Implemented PR #3: Implement support for Docker Secrets - @thekid

@@ -26,7 +26,7 @@ class FromDockerSecretsTest extends AbstractSecretsTest {
 
     $subfolder= new Folder($this->path, 'xp/app');
     $subfolder->create(0777);
-    file_put_contents(new Path($subfolder, 'mysql'), 'test');
+    file_put_contents(new Path($subfolder, 'mysql'), "test\n");
   }
 
   /** @return void */

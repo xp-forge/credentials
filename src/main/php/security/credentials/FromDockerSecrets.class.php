@@ -50,7 +50,7 @@ class FromDockerSecrets implements Secrets {
 
     $file->open(File::READ);
     try {
-      return new Secret($file->read($file->size()));
+      return new Secret(rtrim($file->read($file->size()), "\r\n"));
     } finally {
       $file->close();
     }
@@ -68,7 +68,7 @@ class FromDockerSecrets implements Secrets {
       $file= new File($name);
       $file->open(File::READ);
       try {
-        yield substr($name, strlen($base)) => new Secret($file->read($file->size()));
+        yield substr($name, strlen($base)) => new Secret(rtrim($file->read($file->size()), "\r\n"));
       } finally {
         $file->close();
       }

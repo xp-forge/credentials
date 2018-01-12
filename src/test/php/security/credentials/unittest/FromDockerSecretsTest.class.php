@@ -39,4 +39,20 @@ class FromDockerSecretsTest extends AbstractSecretsTest {
     $path= new Path('.');
     $this->assertEquals($path, (new FromDockerSecrets($path))->path());
   }
+
+  #[@test]
+  public function string_path() {
+    $this->assertEquals(new Path('.'), (new FromDockerSecrets('.'))->path());
+  }
+
+  #[@test]
+  public function folder_path() {
+    $folder= new Folder('.');
+    $this->assertEquals(new Path($folder->getURI()), (new FromDockerSecrets($folder))->path());
+  }
+
+  #[@test]
+  public function default_path() {
+    $this->assertNotEquals(null, (new FromDockerSecrets())->path());
+  }
 }

@@ -14,6 +14,8 @@ class FromDockerSecrets implements Secrets {
   private $path;
 
   /**
+   * Creates a new Docker Secrets source. Optionally, may be given a path. If
+   * omitted, Docker's default locations are used.
    *
    * @param  string|io.Path|io.Folder $path
    */

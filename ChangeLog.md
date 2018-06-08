@@ -1,6 +1,10 @@
 Credentials change log
 ======================
 
+## 0.5.0 / 2018-06-08
+
+* Merged PR #5: Byte escape sequences - @thekid
+
 ## 0.4.1 / 2018-01-12
 
 * Ignored trailing newlines in docker secret files - @thekid

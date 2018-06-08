@@ -14,7 +14,8 @@ class FromFileTest extends AbstractSecretsTest {
       "TEST_DB_PASSWORD=db\n".
       "TEST_LDAP_PASSWORD=ldap\n".
       "PROD_MASTER_KEY=master\n".
-      "XP/APP/MYSQL=test"
+      "XP/APP/MYSQL=test\n".
+      "CLOUD_SECRET=!\\u{0007}nicode"
     )));
   }
 
@@ -42,5 +43,10 @@ class FromFileTest extends AbstractSecretsTest {
     $fixture->open();
     $fixture->close();
     $this->assertFalse($file->exists());
+  }
+
+  #[@test]
+  public function unicode_escape_sequences() {
+    $this->assertCredential("!\x07nicode", 'cloud_secret');
   }
 }

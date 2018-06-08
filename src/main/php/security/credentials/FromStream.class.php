@@ -21,7 +21,11 @@ class FromStream implements Secrets {
     $this->secrets= [];
     foreach (new LinesIn($this->input) as $line) {
       sscanf($line, '%[^=]=%s', $name, $secret);
-      $this->secrets[strtolower($name)]= new Secret($secret);
+      $this->secrets[strtolower($name)]= new Secret(preg_replace_callback(
+        '/\\\\x([0-9a-f]{2})/i',
+        function($matches) { return pack('H*', $matches[1]); },
+        $secret
+      ));
     }
   }
 

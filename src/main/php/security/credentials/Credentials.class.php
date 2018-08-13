@@ -3,6 +3,7 @@
 use lang\Closeable;
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
+use util\PropertyAccess;
 
 class Credentials implements Closeable {
   private $secrets;
@@ -20,6 +21,16 @@ class Credentials implements Closeable {
     }
 
     $this->secrets= cast($secrets, 'security.credentials.Secrets[]');
+  }
+
+  /**
+   * Expand credentials inside a given properties file
+   *
+   * @param  util.PropertyAccess $prop
+   * @param  util.PropertyAccess
+   */
+  public function expanding(PropertyAccess $prop) {
+    return $prop->expanding('secret', function($name) { return $this->named($name)->reveal(); });
   }
 
   /**

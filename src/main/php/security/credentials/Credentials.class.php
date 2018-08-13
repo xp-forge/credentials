@@ -1,9 +1,11 @@
 <?php namespace security\credentials;
 
+use lang\Closeable;
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
+use util\PropertyAccess;
 
-class Credentials implements \lang\Closeable {
+class Credentials implements Closeable {
   private $secrets;
   private $open= false;
 
@@ -18,6 +20,16 @@ class Credentials implements \lang\Closeable {
     }
 
     $this->secrets= cast($secrets, 'security.credentials.Secrets[]');
+  }
+
+  /**
+   * Expand credentials inside a given properties file
+   *
+   * @param  util.PropertyAccess $prop
+   * @param  util.PropertyAccess
+   */
+  public function expanding(PropertyAccess $prop) {
+    return $prop->expanding('secret', function($name) { return $this->named($name)->reveal(); });
   }
 
   /**

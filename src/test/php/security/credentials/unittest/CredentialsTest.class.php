@@ -1,10 +1,10 @@
 <?php namespace security\credentials\unittest;
 
+use lang\ElementNotFoundException;
+use lang\IllegalArgumentException;
 use security\credentials\Credentials;
 use security\credentials\Secrets;
 use util\Secret;
-use lang\IllegalArgumentException;
-use lang\ElementNotFoundException;
 
 class CredentialsTest extends \unittest\TestCase {
 
@@ -27,7 +27,7 @@ class CredentialsTest extends \unittest\TestCase {
   public function credential() {
     $secret= new Secret('test');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
-      'open'  => function() { },
+      'open'  => function() { return $this; },
       'named' => function($name) use($secret) { return $secret; },
       'all'   => function($pattern) { },
       'close' => function() { }
@@ -40,7 +40,7 @@ class CredentialsTest extends \unittest\TestCase {
   public function credentials() {
     $secret= new Secret('test');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
-      'open'  => function() { },
+      'open'  => function() { return $this; },
       'named' => function($name) { },
       'all'   => function($pattern) use($secret) { yield 'test' => $secret; },
       'close' => function() { }
@@ -52,12 +52,33 @@ class CredentialsTest extends \unittest\TestCase {
   #[@test, @expect(ElementNotFoundException::class)]
   public function non_existant_credential() {
     $credentials= new Credentials(newinstance(Secrets::class, [], [
-      'open'  => function() { },
+      'open'  => function() { return $this; },
       'named' => function($name) { return null; },
       'all'   => function($pattern) { },
       'close' => function() { }
     ]));
 
     $credentials->named('test');
+  }
+
+  #[@test]
+  public function secrets_not_opened_until_actually_needed() {
+    $secret= new Secret('test');
+    $credentials= new Credentials(
+      newinstance(Secrets::class, [], [
+        'open'  => function() { return $this; },
+        'named' => function($name) use($secret) { return $secret; },
+        'all'   => function($pattern) { },
+        'close' => function() { }
+      ]),
+      newinstance(Secrets::class, [], [
+        'open'  => function() { throw new IllegalArgumentException('Cannot access'); },
+        'named' => function($name) { },
+        'all'   => function($pattern) { },
+        'close' => function() { }
+      ])
+    );
+
+    $this->assertEquals($secret, $credentials->named('test'));
   }
 }

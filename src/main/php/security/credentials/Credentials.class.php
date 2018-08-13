@@ -1,13 +1,15 @@
 <?php namespace security\credentials;
 
+use lang\Closeable;
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
 
-class Credentials implements \lang\Closeable {
+class Credentials implements Closeable {
   private $secrets;
   private $open= false;
 
   /**
+   * Creates a new credential store
    *
    * @param  security.credentials.Secrets... $secrets
    * @throws lang.IllegalArgumentException
@@ -43,8 +45,8 @@ class Credentials implements \lang\Closeable {
    * @throws lang.ElementNotFoundException
    */
   public function named($name) {
-    foreach ($this->open()->secrets as $secrets) {
-      if (null !== ($secret= $secrets->named($name))) return $secret;
+    foreach ($this->secrets as $secrets) {
+      if (null !== ($secret= $secrets->open()->named($name))) return $secret;
     }
     throw new ElementNotFoundException('No credential named "'.$name.'"');
   }
@@ -56,7 +58,7 @@ class Credentials implements \lang\Closeable {
    * @return php.Generator
    */
   public function all($pattern) {
-    foreach ($this->open()->secrets as $secrets) {
+    foreach ($this->secrets as $secrets) {
       foreach ($secrets->all($pattern) as $name => $secret) {
         yield $name => $secret;
       }
@@ -69,12 +71,10 @@ class Credentials implements \lang\Closeable {
    * @return self
    */
   public function close() {
-    if ($this->open) {
-      foreach ($this->secrets as $secrets) {
-        $secrets->close();
-      }
-      $this->open= false;
-    }    
+    foreach ($this->secrets as $secrets) {
+      $secrets->close();
+    }
+    $this->open= false;
   }
 
   /** @return void */

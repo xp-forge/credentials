@@ -16,17 +16,20 @@ class FromStream implements Secrets {
     $this->input= cast($input, 'io.streams.TextReader|io.streams.InputStream|io.Channel|string');
   }
 
-  /** @return void */
+  /** @return self */
   public function open() {
-    $this->secrets= [];
-    foreach (new LinesIn($this->input) as $line) {
-      sscanf($line, '%[^=]=%s', $name, $secret);
-      $this->secrets[strtolower($name)]= new Secret(preg_replace_callback(
-        '/\\\\x([0-9a-f]{2})/i',
-        function($matches) { return pack('H*', $matches[1]); },
-        $secret
-      ));
+    if (null === $this->secrets) {
+      $this->secrets= [];
+      foreach (new LinesIn($this->input) as $line) {
+        sscanf($line, '%[^=]=%s', $name, $secret);
+        $this->secrets[strtolower($name)]= new Secret(preg_replace_callback(
+          '/\\\\x([0-9a-f]{2})/i',
+          function($matches) { return pack('H*', $matches[1]); },
+          $secret
+        ));
+      }
     }
+    return $this;
   }
 
   /**

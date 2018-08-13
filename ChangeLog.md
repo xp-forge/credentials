@@ -5,6 +5,9 @@ Credentials change log
 
 ## 0.6.0 / 2018-08-13
 
+* **Heads up:** Implementations of the `security.secret.Secrets` interface
+  must return *$this* from `open()` now instead of not returning anything
+  (@thekid)
 * Merged PR #7: Add `Credentials::expanding()` to add expansion in
   property files
   (@thekid)

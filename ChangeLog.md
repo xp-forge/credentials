@@ -1,6 +1,10 @@
 Credentials change log
 ======================
 
+## ?.?.? / ????-??-??
+
+* Merged PR #6: Lazily open secret stores - @thekid
+
 ## 0.5.0 / 2018-06-08
 
 * Merged PR #5: Byte escape sequences - @thekid

@@ -2,6 +2,7 @@
 
 interface Secrets {
 
+  /** @return self */
   public function open();
 
   /**
@@ -20,5 +21,6 @@ interface Secrets {
    */
   public function all($pattern);
 
+  /** @return void */
   public function close();
 }

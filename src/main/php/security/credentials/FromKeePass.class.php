@@ -2,25 +2,30 @@
 
 use info\keepass\KeePassDatabase;
 use info\keepass\Key;
-use util\Secret;
 use io\File;
+use util\Secret;
 
 class FromKeePass implements Secrets {
+  private $file, $key;
+  private $db= null;
 
   /**
    * Uses KeePass database for storage
    *
    * @param  io.File|string $file
-   * @param  util.Secrert $key
+   * @param  util.Secret $key
    */
   public function __construct($file, Secret $key) {
     $this->file= $file instanceof File ? $file : new File($file);
     $this->key= $key;
   }
 
-  /** @return void */
+  /** @return self */
   public function open() {
-    $this->db= KeePassDatabase::open($this->file->in(), new Key($this->key->reveal()));
+    if (null === $this->db) {
+      $this->db= KeePassDatabase::open($this->file->in(), new Key($this->key->reveal()));
+    }
+    return $this;
   }
 
   /**
@@ -66,6 +71,9 @@ class FromKeePass implements Secrets {
 
   /** @return void */
   public function close() {
-    $this->db->close();
+    if ($this->db) {
+      $this->db->close();
+      $this->db= null;
+    }
   }
 }

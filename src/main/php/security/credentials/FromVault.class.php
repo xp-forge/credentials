@@ -1,7 +1,7 @@
 <?php namespace security\credentials;
 
-use webservices\rest\Endpoint;
 use util\Secret;
+use webservices\rest\Endpoint;
 
 class FromVault implements Secrets {
   private $endpoint;
@@ -24,10 +24,8 @@ class FromVault implements Secrets {
     }
   }
 
-  /** @return void */
-  public function open() {
-    // NOOP
-  }
+  /** @return self */
+  public function open() { return $this; }
 
   /**
    * Get a named credential

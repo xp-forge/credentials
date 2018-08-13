@@ -18,8 +18,8 @@ class FromEnvironment implements Secrets {
     $this->remove= $remove;
   }
 
-  /** @return void */
-  public function open() { }
+  /** @return self */
+  public function open() { return $this; }
 
   /**
    * Get a named credential
@@ -50,6 +50,9 @@ class FromEnvironment implements Secrets {
 
   /** @return void */
   public function close() {
-    Environment::export($this->unset);
+    if ($this->unset) {
+      Environment::export($this->unset);
+      $this->unset= [];
+    }
   }
 }

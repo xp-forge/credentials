@@ -3,6 +3,11 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 0.6.0 / 2018-08-13
+
+* Merged PR #7: Add `Credentials::expanding()` to add expansion in
+  property files
+  (@thekid)
 * Merged PR #6: Lazily open secret stores - @thekid
 
 ## 0.5.0 / 2018-06-08

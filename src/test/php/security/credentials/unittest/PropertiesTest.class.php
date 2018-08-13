@@ -13,7 +13,7 @@ class PropertiesTest extends TestCase {
   public function expanding() {
     $secret= new Secret('Expanded!');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
-      'open'  => function() { },
+      'open'  => function() { return $this; },
       'named' => function($name) use($secret) { return $secret; },
       'all'   => function($pattern) { },
       'close' => function() { }

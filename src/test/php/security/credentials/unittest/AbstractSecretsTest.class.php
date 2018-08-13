@@ -23,16 +23,6 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
     }
   }
 
-  #[@test]
-  public function open_and_close_can_be_called_twice() {
-    $fixture= $this->newFixture();
-    $fixture->open();
-    $fixture->open();
-
-    $fixture->close();
-    $fixture->close();
-  }
-
   /**
    * Assertion helper
    *
@@ -54,6 +44,15 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
     }
   }
 
+  #[@test]
+  public function open_and_close_can_be_called_twice() {
+    $fixture= $this->newFixture();
+    $fixture->open();
+    $fixture->open();
+
+    $fixture->close();
+    $fixture->close();
+  }
 
   #[@test, @values([
   #  ['test_db_password', 'db'],

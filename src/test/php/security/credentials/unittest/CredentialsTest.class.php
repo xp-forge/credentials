@@ -36,8 +36,8 @@ class CredentialsTest extends \unittest\TestCase {
     $this->assertEquals($secret, $credentials->named('test'));
   }
 
-  #[@test]
-  public function credentials() {
+  #[@test, @values(['test', '*'])]
+  public function credentials($pattern) {
     $secret= new Secret('test');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
       'open'  => function() { return $this; },
@@ -46,7 +46,7 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $this->assertEquals(['test' => $secret], iterator_to_array($credentials->all('test')));
+    $this->assertEquals(['test' => $secret], iterator_to_array($credentials->all($pattern)));
   }
 
   #[@test, @expect(ElementNotFoundException::class)]
@@ -80,5 +80,27 @@ class CredentialsTest extends \unittest\TestCase {
     );
 
     $this->assertEquals($secret, $credentials->named('test'));
+  }
+
+  #[@test]
+  public function secrets_opened_during_all() {
+    $credentials= new Credentials(
+      newinstance(Secrets::class, [], [
+        'open'  => function() use(&$opened) { $opened[]= 'a'; return $this; },
+        'named' => function($name) { },
+        'all'   => function($pattern) { yield 'a' => new Secret('a'); },
+        'close' => function() { }
+      ]),
+      newinstance(Secrets::class, [], [
+        'open'  => function() use(&$opened) { $opened[]= 'b'; return $this; },
+        'named' => function($name) { },
+        'all'   => function($pattern) { yield 'b' => new Secret('b'); },
+        'close' => function() { }
+      ])
+    );
+
+    $opened= [];
+    iterator_count($credentials->all('*'));
+    $this->assertEquals(['a', 'b'], $opened);
   }
 }

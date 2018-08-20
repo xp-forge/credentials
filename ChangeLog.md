@@ -3,6 +3,13 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 0.7.0 / 2018-08-20
+
+* Made `pattern` parameter to `Credentials::all()` optional, defaulting
+  to *list all credentials*
+  (@thekid)
+* Fixed `all()` not opening credentials stores correctly - @thekid
+
 ## 0.6.0 / 2018-08-13
 
 * **Heads up:** Implementations of the `security.secret.Secrets` interface

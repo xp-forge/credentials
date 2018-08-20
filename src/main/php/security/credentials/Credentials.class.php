@@ -68,9 +68,9 @@ class Credentials implements Closeable {
    * @param  string $pattern Name with * meaning any character except a dot
    * @return php.Generator
    */
-  public function all($pattern) {
+  public function all($pattern= '*') {
     foreach ($this->secrets as $secrets) {
-      foreach ($secrets->all($pattern) as $name => $secret) {
+      foreach ($secrets->open()->all($pattern) as $name => $secret) {
         yield $name => $secret;
       }
     }

@@ -3,10 +3,6 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
-## 0.7.2 / 2018-08-25
-
-* Made library compatible with `xp-framework/rest` 10.0.0 - @thekid
-
 ## 0.7.1 / 2018-08-25
 
 * Made library compatible with `xp-framework/rest` 10.0.0 - @thekid

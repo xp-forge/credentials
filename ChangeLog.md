@@ -1,6 +1,10 @@
 Credentials change log
 ======================
 
+## 0.4.2 / 2018-08-25
+
+* Made library compatible with `xp-framework/rest` 10.0.0 - @thekid
+
 ## 0.4.1 / 2018-01-12
 
 * Ignored trailing newlines in docker secret files - @thekid

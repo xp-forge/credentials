@@ -1,13 +1,16 @@
 <?php namespace security\credentials;
 
+use lang\Closeable;
 use lang\ElementNotFoundException;
 use lang\IllegalArgumentException;
+use util\PropertyAccess;
 
-class Credentials implements \lang\Closeable {
+class Credentials implements Closeable {
   private $secrets;
   private $open= false;
 
   /**
+   * Creates a new credential store
    *
    * @param  security.credentials.Secrets... $secrets
    * @throws lang.IllegalArgumentException
@@ -18,6 +21,16 @@ class Credentials implements \lang\Closeable {
     }
 
     $this->secrets= cast($secrets, 'security.credentials.Secrets[]');
+  }
+
+  /**
+   * Expand credentials inside a given properties file
+   *
+   * @param  util.PropertyAccess $prop
+   * @param  util.PropertyAccess
+   */
+  public function expanding(PropertyAccess $prop) {
+    return $prop->expanding('secret', function($name) { return $this->named($name)->reveal(); });
   }
 
   /**
@@ -43,8 +56,8 @@ class Credentials implements \lang\Closeable {
    * @throws lang.ElementNotFoundException
    */
   public function named($name) {
-    foreach ($this->open()->secrets as $secrets) {
-      if (null !== ($secret= $secrets->named($name))) return $secret;
+    foreach ($this->secrets as $secrets) {
+      if (null !== ($secret= $secrets->open()->named($name))) return $secret;
     }
     throw new ElementNotFoundException('No credential named "'.$name.'"');
   }
@@ -55,9 +68,9 @@ class Credentials implements \lang\Closeable {
    * @param  string $pattern Name with * meaning any character except a dot
    * @return php.Generator
    */
-  public function all($pattern) {
-    foreach ($this->open()->secrets as $secrets) {
-      foreach ($secrets->all($pattern) as $name => $secret) {
+  public function all($pattern= '*') {
+    foreach ($this->secrets as $secrets) {
+      foreach ($secrets->open()->all($pattern) as $name => $secret) {
         yield $name => $secret;
       }
     }
@@ -69,12 +82,10 @@ class Credentials implements \lang\Closeable {
    * @return self
    */
   public function close() {
-    if ($this->open) {
-      foreach ($this->secrets as $secrets) {
-        $secrets->close();
-      }
-      $this->open= false;
-    }    
+    foreach ($this->secrets as $secrets) {
+      $secrets->close();
+    }
+    $this->open= false;
   }
 
   /** @return void */

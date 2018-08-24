@@ -1,8 +1,8 @@
 <?php namespace security\credentials;
 
 use io\File;
-use io\Path;
 use io\Folder;
+use io\Path;
 use util\Secret;
 
 /**
@@ -36,7 +36,8 @@ class FromDockerSecrets implements Secrets {
   /** @return io.Path */
   public function path() { return $this->path; }
 
-  public function open() { }
+  /** @return self */
+  public function open() { return $this; }
 
   /**
    * Get a named credential
@@ -75,5 +76,6 @@ class FromDockerSecrets implements Secrets {
     }
   }
 
+  /** @return void */
   public function close() { }
 }

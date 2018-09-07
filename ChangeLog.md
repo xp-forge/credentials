@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 0.8.0 / 2018-09-07
+
+* Merged PR #9: Migrate to use xp-forge/rest-client API - @thekid
+
 ## 0.7.1 / 2018-08-25
 
 * Made library compatible with `xp-framework/rest` 10.0.0 - @thekid

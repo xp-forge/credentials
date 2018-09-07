@@ -1,14 +1,14 @@
 <?php namespace security\credentials\unittest;
 
+use io\streams\MemoryInputStream;
+use lang\FormatException;
+use peer\URL;
+use peer\http\HttpResponse;
 use security\credentials\FromVault;
 use util\Secret;
 use webservices\rest\Endpoint;
 use webservices\rest\RestRequest;
 use webservices\rest\RestResponse;
-use peer\http\HttpResponse;
-use io\streams\MemoryInputStream;
-use peer\URL;
-use lang\FormatException;
 
 class FromVaultTest extends AbstractSecretsTest {
 
@@ -37,23 +37,16 @@ class FromVaultTest extends AbstractSecretsTest {
   /** @return security.vault.Secrets */
   protected function newFixture() {
     $answers= &self::$answers[$this->getName()];
-    return new FromVault(newinstance(Endpoint::class, [], [
-      '__construct' => function() {
-        parent::__construct('http://test');
-      },
+    return new FromVault(newinstance(Endpoint::class, ['http://test'], [
       'execute' => function(RestRequest $request) use(&$answers) {
         $answer= array_shift($answers);
-        return newinstance(RestResponse::class, [], [
-          '__construct' => function() use($answer) {
-            parent::__construct(new HttpResponse(new MemoryInputStream(null === $answer
-              ? "HTTP/1.1 404 Not Found\r\r\r\n"
-              : "HTTP/1.1 200 OK\r\n\r\n"
-            )));
-          },
-          'data' => function($type= null) use($answer) {
-            return $answer;
-          }
-        ]);
+        if (null === $answer) {
+          return new RestResponse(404, 'Not found');
+        } else {
+          return newinstance(RestResponse::class, [200, 'OK'], [
+            'value' => function($type= null) use($answer) { return $answer; }
+          ]);
+        }
       }
     ]));
   }

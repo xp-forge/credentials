@@ -36,12 +36,12 @@ class FromVault implements Secrets {
   public function named($name) {
     $p= strrpos($name, '/');
     $response= $this->endpoint->resource('/v1/secret/'.substr($name, 0, $p))->get();
-    if ($response->isError()) {
-      return null;
-    } else {
-      $data= $response->data()['data'];
+    if ($response->status() < 400) {
+      $data= $response->value()['data'];
       $key= ltrim(substr($name, $p), '/');
       return isset($data[$key]) ? new Secret($data[$key]) : null;
+    } else {
+      return null;
     }
   }
 
@@ -55,10 +55,10 @@ class FromVault implements Secrets {
     $p= strrpos($pattern, '/');
     $group= substr($pattern, 0, $p);
     $response= $this->endpoint->resource('/v1/secret/'.$group)->get();
-    if (!$response->isError()) {
+    if ($response->status() < 400) {
       $key= ltrim(substr($pattern, $p), '/');
       $match= substr($key, 0, strrpos($key, '*'));
-      foreach ($response->data()['data'] as $name => $value) {
+      foreach ($response->value()['data'] as $name => $value) {
         if (0 === strncmp($name, $match, strlen($match))) yield ltrim($group.'/'.$name, '/') => new Secret($value);
       }
     }

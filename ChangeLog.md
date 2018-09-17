@@ -3,6 +3,12 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 0.8.1 / 2018-09-17
+
+* Fixed *Call to undefined method webservices\rest\Endpoint::with()*
+  when using `FromVault` with a token
+  (@thekid)
+
 ## 0.8.0 / 2018-09-07
 
 * Merged PR #9: Migrate to use xp-forge/rest-client API - @thekid

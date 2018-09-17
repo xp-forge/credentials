@@ -62,6 +62,20 @@ class CredentialsTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function explicit_open() {
+    $opened= false;
+    $credentials= new Credentials(newinstance(Secrets::class, [], [
+      'open'  => function() use(&$opened) { $opened= true; return $this; },
+      'named' => function($name) { return null; },
+      'all'   => function($pattern) { },
+      'close' => function() { }
+    ]));
+
+    $credentials->open();
+    $this->assertEquals(true, $opened);
+  }
+
+  #[@test]
   public function secrets_not_opened_until_actually_needed() {
     $secret= new Secret('test');
     $credentials= new Credentials(

@@ -61,6 +61,11 @@ class FromVaultTest extends AbstractSecretsTest {
   }
 
   #[@test]
+  public function can_create_with_token() {
+    new FromVault('http://vault:8200', 'SECRET_VAULT_TOKEN');
+  }
+
+  #[@test]
   public function uses_environment_variable_by_default() {
     putenv('VAULT_ADDR=http://127.0.0.1:8200');
     new FromVault();

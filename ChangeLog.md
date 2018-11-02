@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 0.8.2 / 2018-11-02
+
+* Added compatibility with xp-forge/rest-client 0.5.0 - @thekid
+
 ## 0.8.1 / 2018-09-17
 
 * Fixed *Call to undefined method webservices\rest\Endpoint::with()*

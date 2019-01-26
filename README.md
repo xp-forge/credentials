@@ -69,7 +69,7 @@ $secret= $credentials->named('vendor/name/mysql'); // Reads mysql entry in vendo
 
 ### Docker secrets
 
-See https://docs.docker.com/engine/swarm/secrets/. Uses Docker's default locations if constr
+See https://docs.docker.com/engine/swarm/secrets/. Uses Docker's default locations on both Windows and Un\*x systems if constructed without argument.
 
 ```php
 use security\credentials\{Credentials, FromDockerSecrets};

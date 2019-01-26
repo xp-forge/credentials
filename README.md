@@ -49,9 +49,14 @@ Via the `FromVault` class. Credentials are read from the backend mounted at `/se
 ```php
 use security\credentials\{Credentials, FromVault};
 
-$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', '72698676-4988-94a4-...'));
+// Set token to NULL to use VAULT_TOKEN from environment
+$token= '72698676-4988-94a4-...';
+
+$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', $token));
 $secret= $credentials->named('ldap_password');     // Reads ldap_password key from /secret
-$secret= $credentials->named('vendor/name/mysql'); // Reads mysql key from /secret/vendor/name
+
+$credentials= new Credentials(new FromVault('http://127.0.0.1:8200', $token, 'vendor/name'));
+$secret= $credentials->named('mysql');             // Reads mysql key from /secret/vendor/name
 ```
 
 ### KeePass databases

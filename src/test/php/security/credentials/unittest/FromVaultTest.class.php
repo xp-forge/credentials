@@ -31,6 +31,9 @@ class FromVaultTest extends AbstractSecretsTest {
     ],
     'all_in_subfolder' => [
       ['data' => ['mysql' => 'test']],
+    ],
+    'using_group' => [
+      ['data' => ['credential' => 'test']],
     ]
   ];
 
@@ -66,6 +69,11 @@ class FromVaultTest extends AbstractSecretsTest {
   }
 
   #[@test]
+  public function can_create_with_token_and_group() {
+    new FromVault('http://vault:8200', 'SECRET_VAULT_TOKEN', '/vendor/name');
+  }
+
+  #[@test]
   public function uses_environment_variable_by_default() {
     putenv('VAULT_ADDR=http://127.0.0.1:8200');
     new FromVault();
@@ -75,5 +83,24 @@ class FromVaultTest extends AbstractSecretsTest {
   public function fails_if_environment_variable_missing() {
     putenv('VAULT_ADDR=');
     new FromVault();
+  }
+
+  #[@test, @values(map= [
+  #  '/'             => '/',
+  #  '/vendor/name'  => '/vendor/name/',
+  #  '/vendor/name/' => '/vendor/name/',
+  #  'vendor/name'   => '/vendor/name/',
+  #  'vendor/name/'  => '/vendor/name/',
+  #])]
+  public function using_group($group, $path) {
+    $endpoint= newinstance(Endpoint::class, ['http://test'], [
+      'execute' => function(RestRequest $request) use(&$requested) {
+        $requested= $request->path();
+        return new RestResponse(404, 'Not found');
+      }
+    ]);
+
+    (new FromVault($endpoint, 'SECRET_VAULT_TOKEN', $group))->named('credential');
+    $this->assertEquals('/v1/secret'.$path, $requested);
   }
 }

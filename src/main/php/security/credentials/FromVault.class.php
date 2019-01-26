@@ -4,15 +4,16 @@ use util\Secret;
 use webservices\rest\Endpoint;
 
 class FromVault implements Secrets {
-  private $endpoint;
+  private $endpoint, $group;
 
   /**
    * Creates a secrets source which reads credentials from a running vault service
    *
    * @param  string|peer.URL|webservices.rest.Endpoint $endpoint If omitted, defaults to `VAULT_ADDR` environment variable
    * @param  string $token If omitted, defaults to `VAULT_TOKEN` environment variable
+   * @param  string $group The secret group, e.g. "/vendor/name"
    */
-  public function __construct($endpoint= null, $token= null) {
+  public function __construct($endpoint= null, $token= null, $group= '/') {
     if ($endpoint instanceof Endpoint) {
       $this->endpoint= $endpoint;
     } else {
@@ -22,6 +23,8 @@ class FromVault implements Secrets {
     if ($header= $token ?: getenv('VAULT_TOKEN')) {
       $this->endpoint->with('X-Vault-Token', $header);
     }
+
+    $this->group= '/' === $group ? '' : trim($group, '/').'/';
   }
 
   /** @return self */
@@ -35,7 +38,7 @@ class FromVault implements Secrets {
    */
   public function named($name) {
     $p= strrpos($name, '/');
-    $response= $this->endpoint->resource('/v1/secret/'.substr($name, 0, $p))->get();
+    $response= $this->endpoint->resource('/v1/secret/'.$this->group.substr($name, 0, $p))->get();
     if ($response->status() < 400) {
       $data= $response->value()['data'];
       $key= ltrim(substr($name, $p), '/');
@@ -54,7 +57,7 @@ class FromVault implements Secrets {
   public function all($pattern) {
     $p= strrpos($pattern, '/');
     $group= substr($pattern, 0, $p);
-    $response= $this->endpoint->resource('/v1/secret/'.$group)->get();
+    $response= $this->endpoint->resource('/v1/secret/'.$this->group.$group)->get();
     if ($response->status() < 400) {
       $key= ltrim(substr($pattern, $p), '/');
       $match= substr($key, 0, strrpos($key, '*'));

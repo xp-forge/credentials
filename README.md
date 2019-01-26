@@ -49,7 +49,7 @@ Via the `FromVault` class. Credentials are read from the backend mounted at `/se
 use security\credentials\{Credentials, FromVault};
 
 // Set token to NULL to use VAULT_TOKEN from environment
-$token= '72698676-4988-94a4-...';
+$token= new Secret('72698676-4988-94a4-...');
 
 $credentials= new Credentials(new FromVault('http://127.0.0.1:8200', $token));
 $secret= $credentials->named('ldap_password');     // Reads ldap_password key from /secret

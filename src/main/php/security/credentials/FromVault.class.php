@@ -10,7 +10,7 @@ class FromVault implements Secrets {
    * Creates a secrets source which reads credentials from a running vault service
    *
    * @param  string|peer.URL|webservices.rest.Endpoint $endpoint If omitted, defaults to `VAULT_ADDR` environment variable
-   * @param  string $token If omitted, defaults to `VAULT_TOKEN` environment variable
+   * @param  string|util.Secret $token If omitted, defaults to `VAULT_TOKEN` environment variable
    * @param  string $group The secret group, e.g. "/vendor/name"
    */
   public function __construct($endpoint= null, $token= null, $group= '/') {
@@ -20,7 +20,9 @@ class FromVault implements Secrets {
       $this->endpoint= new Endpoint($endpoint ?: getenv('VAULT_ADDR'));
     }
 
-    if ($header= $token ?: getenv('VAULT_TOKEN')) {
+    if ($token instanceof Secret) {
+      $this->endpoint->with('X-Vault-Token', $token->reveal());
+    } else if ($header= $token ?: getenv('VAULT_TOKEN')) {
       $this->endpoint->with('X-Vault-Token', $header);
     }
 

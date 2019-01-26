@@ -26,15 +26,6 @@ class FromVaultTest extends AbstractSecretsTest {
       ['data' => ['test_db_password' => 'db', 'test_ldap_password' => 'ldap']],
       ['data' => ['prod_master_key' => 'master']]
     ],
-    'from_subfolder' => [
-      ['data' => ['mysql' => 'test']],
-    ],
-    'all_in_subfolder' => [
-      ['data' => ['mysql' => 'test']],
-    ],
-    'using_group' => [
-      ['data' => ['credential' => 'test']],
-    ]
   ];
 
   /** @return security.vault.Secrets */
@@ -63,9 +54,9 @@ class FromVaultTest extends AbstractSecretsTest {
     new FromVault($arg);
   }
 
-  #[@test]
-  public function can_create_with_token() {
-    new FromVault('http://vault:8200', 'SECRET_VAULT_TOKEN');
+  #[@test, @values(['secret', new Secret('for-vault')])]
+  public function can_create_with_token($token) {
+    new FromVault('http://vault:8200', $token);
   }
 
   #[@test]

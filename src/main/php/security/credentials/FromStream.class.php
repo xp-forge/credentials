@@ -46,7 +46,7 @@ class FromStream implements Secrets {
    * Get credentials for a given pattern
    *
    * @param  string $pattern Name with * meaning any character except a dot
-   * @return php.Generator
+   * @return iterable
    */
   public function all($pattern) {
     $match= substr($pattern, 0, strrpos($pattern, '*'));

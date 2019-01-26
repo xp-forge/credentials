@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 1.0.0 / 2019-01-26
+
+* Require xp-forge/rest-client `^1.0` - @thekid
+
 ## 0.8.5 / 2019-01-22
 
 * Added compatibility with xp-forge/rest-client 0.8.0 - @thekid

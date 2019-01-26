@@ -5,7 +5,6 @@ use webservices\rest\Endpoint;
 
 class FromVault implements Secrets {
   private $endpoint;
-  private $headers= [];
 
   /**
    * Creates a secrets source which reads credentials from a running vault service
@@ -21,7 +20,7 @@ class FromVault implements Secrets {
     }
 
     if ($header= $token ?: getenv('VAULT_TOKEN')) {
-      $this->headers= ['X-Vault-Token' => $header];
+      $this->endpoint->with('X-Vault-Token', $header);
     }
   }
 
@@ -36,7 +35,7 @@ class FromVault implements Secrets {
    */
   public function named($name) {
     $p= strrpos($name, '/');
-    $response= $this->endpoint->resource('/v1/secret/'.substr($name, 0, $p))->with($this->headers)->get();
+    $response= $this->endpoint->resource('/v1/secret/'.substr($name, 0, $p))->get();
     if ($response->status() < 400) {
       $data= $response->value()['data'];
       $key= ltrim(substr($name, $p), '/');
@@ -50,12 +49,12 @@ class FromVault implements Secrets {
    * Get credentials for a given pattern
    *
    * @param  string $pattern Name with * meaning any character except a dot
-   * @return php.Generator
+   * @return iterable
    */
   public function all($pattern) {
     $p= strrpos($pattern, '/');
     $group= substr($pattern, 0, $p);
-    $response= $this->endpoint->resource('/v1/secret/'.$group)->with($this->headers)->get();
+    $response= $this->endpoint->resource('/v1/secret/'.$group)->get();
     if ($response->status() < 400) {
       $key= ltrim(substr($pattern, $p), '/');
       $match= substr($key, 0, strrpos($key, '*'));

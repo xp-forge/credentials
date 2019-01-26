@@ -39,7 +39,6 @@ use security\credentials\{Credentials, FromEnvironment};
 
 $credentials= new Credentials(new FromEnvironment());
 $secret= $credentials->named('ldap_password');     // Reads $ENV{LDAP_PASSWORD} => util.Secret
-$secret= $credentials->named('vendor/name/mysql'); // Reads $ENV{VENDOR__NAME__MYSQL} => util.Secret
 ```
 
 ### Hashicorp's Vault
@@ -86,7 +85,6 @@ use util\Secret;
 
 $credentials= new Credentials(new FromDockerSecrets());
 $secret= $credentials->named('ldap_password');     // Reads top-level entry ldap_password
-$secret= $credentials->named('vendor/name/mysql'); // Reads mysql entry in vendor/name
 ```
 
 See also

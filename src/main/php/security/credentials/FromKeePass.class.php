@@ -37,16 +37,8 @@ class FromKeePass implements Secrets {
    * @return util.Secret
    */
   public function named($name) {
-    if (false === ($p= strrpos($name, '/'))) {
-      $group= '/';
-      $match= $name;
-    } else {
-      $group= '/'.substr($name, 0, $p);
-      $match= substr($name, $p + 1);
-    }
-    
-    foreach ($this->db->group($this->group.$group)->passwords() as $path => $value) {
-      if (basename($path) === $match) return new Secret((string)$value);
+    foreach ($this->db->group('/'.$this->group)->passwords() as $path => $value) {
+      if (basename($path) === $name) return new Secret((string)$value);
     }
     return null;
   }
@@ -58,16 +50,10 @@ class FromKeePass implements Secrets {
    * @return iterable
    */
   public function all($pattern) {
-    if (false === ($p= strrpos($pattern, '/'))) {
-      $group= '/';
-      $match= substr($pattern, 0, strrpos($pattern, '*'));
-    } else {
-      $group= '/'.substr($pattern, 0, $p);
-      $match= substr($pattern, $p + 1, strrpos($pattern, '*') - $p - 1);
-    }
-    
-    foreach ($this->db->group($this->group.$group)->passwords() as $path => $value) {
-      if (0 === strncmp(basename($path), $match, strlen($match))) yield substr($path, 1) => new Secret((string)$value);
+    $match= substr($pattern, 0, strrpos($pattern, '*'));
+    foreach ($this->db->group('/'.$this->group)->passwords() as $path => $value) {
+      $base= basename($path);
+      if (0 === strncmp($base, $match, strlen($match))) yield $base => new Secret((string)$value);
     }
   }
 

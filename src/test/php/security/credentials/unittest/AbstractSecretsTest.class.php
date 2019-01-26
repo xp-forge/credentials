@@ -8,13 +8,13 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
   /**
    * Assertion helper
    *
+   * @param  security.valuts.Secrets $fixture
    * @param  string $expected
    * @param  string $name
    * @return void
    * @throws unittest.AssertionFailedError
    */
-  protected function assertCredential($expected, $name) {
-    $fixture= $this->newFixture();
+  protected function assertCredential($fixture, $expected, $name) {
     $fixture->open();
     try {
       $this->assertEquals($expected, $fixture->named($name)->reveal());
@@ -26,13 +26,13 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
   /**
    * Assertion helper
    *
+   * @param  security.valuts.Secrets $fixture
    * @param  [:string] $expected
    * @param  string $pattern
    * @return void
    * @throws unittest.AssertionFailedError
    */
-  protected function assertCredentials($expected, $pattern) {
-    $fixture= $this->newFixture();
+  protected function assertCredentials($fixture, $expected, $pattern) {
     $fixture->open();
     try {
       $this->assertEquals($expected, array_map(
@@ -60,7 +60,7 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
   #  ['prod_master_key', 'master']
   #])]
   public function credential($name, $result) {
-    $this->assertCredential($result, $name);
+    $this->assertCredential($this->newFixture(), $result, $name);
   }
 
   #[@test, @values([
@@ -69,17 +69,7 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
   #  ['non_existant_*', []]
   #])]
   public function credentials($filter, $result) {
-    $this->assertCredentials($result, $filter);
-  }
-
-  #[@test]
-  public function from_subfolder() {
-    $this->assertCredential('test', 'xp/app/mysql');
-  }
-
-  #[@test]
-  public function all_in_subfolder() {
-    $this->assertCredentials(['xp/app/mysql' => 'test'], 'xp/app/*');
+    $this->assertCredentials($this->newFixture(), $result, $filter);
   }
 
   #[@test]

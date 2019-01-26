@@ -1,8 +1,8 @@
 <?php namespace security\credentials\unittest;
 
+use lang\Environment;
 use security\credentials\FromEnvironment;
 use util\Secret;
-use lang\Environment;
 
 class FromEnvironmentTest extends AbstractSecretsTest {
 
@@ -15,7 +15,6 @@ class FromEnvironmentTest extends AbstractSecretsTest {
       'TEST_DB_PASSWORD'   => 'db',
       'TEST_LDAP_PASSWORD' => 'ldap',
       'PROD_MASTER_KEY'    => 'master',
-      'XP__APP__MYSQL'     => 'test'
     ]);
   }
 

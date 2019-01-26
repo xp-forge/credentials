@@ -1,10 +1,10 @@
 <?php namespace security\credentials\unittest;
 
-use security\credentials\FromFile;
 use io\File;
 use io\TempFile;
-use io\streams\Streams;
 use io\streams\MemoryInputStream;
+use io\streams\Streams;
+use security\credentials\FromFile;
 
 class FromFileTest extends AbstractSecretsTest {
 
@@ -14,7 +14,6 @@ class FromFileTest extends AbstractSecretsTest {
       "TEST_DB_PASSWORD=db\n".
       "TEST_LDAP_PASSWORD=ldap\n".
       "PROD_MASTER_KEY=master\n".
-      "XP/APP/MYSQL=test\n".
       "CLOUD_SECRET=S\\xa7T"
     )));
   }
@@ -47,6 +46,6 @@ class FromFileTest extends AbstractSecretsTest {
 
   #[@test]
   public function byte_escape_sequence() {
-    $this->assertCredential("S\xa7T", 'cloud_secret');
+    $this->assertCredential($this->newFixture(), "S\xa7T", 'cloud_secret');
   }
 }

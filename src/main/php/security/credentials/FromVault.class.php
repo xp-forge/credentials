@@ -37,12 +37,10 @@ class FromVault implements Secrets {
    * @return util.Secret
    */
   public function named($name) {
-    $p= strrpos($name, '/');
-    $response= $this->endpoint->resource('/v1/secret/'.$this->group.substr($name, 0, $p))->get();
+    $response= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
     if ($response->status() < 400) {
       $data= $response->value()['data'];
-      $key= ltrim(substr($name, $p), '/');
-      return isset($data[$key]) ? new Secret($data[$key]) : null;
+      return isset($data[$name]) ? new Secret($data[$name]) : null;
     } else {
       return null;
     }
@@ -55,14 +53,11 @@ class FromVault implements Secrets {
    * @return iterable
    */
   public function all($pattern) {
-    $p= strrpos($pattern, '/');
-    $group= substr($pattern, 0, $p);
-    $response= $this->endpoint->resource('/v1/secret/'.$this->group.$group)->get();
+    $response= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
     if ($response->status() < 400) {
-      $key= ltrim(substr($pattern, $p), '/');
-      $match= substr($key, 0, strrpos($key, '*'));
+      $match= substr($pattern, 0, strrpos($pattern, '*'));
       foreach ($response->value()['data'] as $name => $value) {
-        if (0 === strncmp($name, $match, strlen($match))) yield ltrim($group.'/'.$name, '/') => new Secret($value);
+        if (0 === strncmp($name, $match, strlen($match))) yield $name => new Secret($value);
       }
     }
   }

@@ -5,6 +5,9 @@ Credentials change log
 
 ## 1.0.0 / 2019-01-26
 
+* **Heads up:** Dropped support for hierarchical credentials using forward
+  slashes. Credential groups in KeePass databases and in Vault can be
+  accessed by passing the groups' names to their respective constructors.
 * Require xp-forge/rest-client `^1.0` - @thekid
 
 ## 0.8.5 / 2019-01-22

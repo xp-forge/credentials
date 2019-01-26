@@ -17,12 +17,11 @@ class FromKeePassTest extends AbstractSecretsTest {
 
   #[@test, @values(['xp/app', '/xp/app', '/xp/app/'])]
   public function using_group($group) {
-    $fixture= $this->newFixture($group);
-    $fixture->open();
-    try {
-      $this->assertEquals('test', $fixture->named('mysql')->reveal());
-    } finally {
-      $fixture->close();
-    }
+    $this->assertCredential($this->newFixture($group), 'test', 'mysql');
+  }
+
+  #[@test, @values(['xp/app', '/xp/app', '/xp/app/'])]
+  public function all_in_group($group) {
+    $this->assertCredentials($this->newFixture($group), ['mysql' => 'test'], '*');
   }
 }

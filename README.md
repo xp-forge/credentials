@@ -19,6 +19,7 @@ This API supports the following backends:
 * [Environment variables](https://github.com/xp-forge/credentials#environment-variables)
 * [Hashicorp's Vault](https://github.com/xp-forge/credentials#hashicorps-vault) 
 * [KeePass databases](https://github.com/xp-forge/credentials#keepass-databases)
+* [Docker Secrets](https://github.com/xp-forge/credentials#docker-secrets)
 
 ### Files
 
@@ -66,7 +67,18 @@ $secret= $credentials->named('ldap_password');     // Reads top-level entry ldap
 $secret= $credentials->named('vendor/name/mysql'); // Reads mysql entry in vendor/name subfolder
 ```
 
+### Docker secrets
 
+See https://docs.docker.com/engine/swarm/secrets/. Uses Docker's default locations if constr
+
+```php
+use security\credentials\{Credentials, FromDockerSecrets};
+use util\Secret;
+
+$credentials= new Credentials(new FromDockerSecrets());
+$secret= $credentials->named('ldap_password');     // Reads top-level entry ldap_password
+$secret= $credentials->named('vendor/name/mysql'); // Reads mysql entry in vendor/name
+```
 
 See also
 --------

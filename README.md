@@ -67,9 +67,13 @@ Via the `KeePass` class.
 use security\credentials\{Credentials, FromKeePass};
 use util\Secret;
 
-$credentials= new Credentials(new FromKeePass('database.kdbx', new Secret('key')));
+$secret= new Secret('key');
+
+$credentials= new Credentials(new FromKeePass('database.kdbx', $secret));
 $secret= $credentials->named('ldap_password');     // Reads top-level entry ldap_password
-$secret= $credentials->named('vendor/name/mysql'); // Reads mysql entry in vendor/name subfolder
+
+$credentials= new Credentials(new FromKeePass('database.kdbx', $secret, 'vendor/name'));
+$secret= $credentials->named('mysql');             // Reads mysql entry in vendor/name subfolder
 ```
 
 ### Docker secrets

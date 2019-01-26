@@ -14,10 +14,12 @@ class FromKeePass implements Secrets {
    *
    * @param  io.File|string $file
    * @param  util.Secret $key
+   * @param  string $group The secret group, e.g. "/vendor/name"
    */
-  public function __construct($file, Secret $key) {
+  public function __construct($file, Secret $key, $group= '/') {
     $this->file= $file instanceof File ? $file : new File($file);
     $this->key= $key;
+    $this->group= trim($group, '/');
   }
 
   /** @return self */
@@ -43,7 +45,7 @@ class FromKeePass implements Secrets {
       $match= substr($name, $p + 1);
     }
     
-    foreach ($this->db->group($group)->passwords() as $path => $value) {
+    foreach ($this->db->group($this->group.$group)->passwords() as $path => $value) {
       if (basename($path) === $match) return new Secret((string)$value);
     }
     return null;
@@ -64,7 +66,7 @@ class FromKeePass implements Secrets {
       $match= substr($pattern, $p + 1, strrpos($pattern, '*') - $p - 1);
     }
     
-    foreach ($this->db->group($group)->passwords() as $path => $value) {
+    foreach ($this->db->group($this->group.$group)->passwords() as $path => $value) {
       if (0 === strncmp(basename($path), $match, strlen($match))) yield substr($path, 1) => new Secret((string)$value);
     }
   }

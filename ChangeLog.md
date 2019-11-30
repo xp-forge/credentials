@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 1.0.1 / 2019-11-30
+
+* Made compatible with XP 10 - @thekid
+
 ## 1.0.0 / 2019-01-26
 
 * **Heads up:** Dropped support for hierarchical credentials using forward

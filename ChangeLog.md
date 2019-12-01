@@ -3,6 +3,12 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 2.0.0 / 2019-12-01
+
+* Implemented xp-framework/rfc#334: Drop PHP 5.6. The minimum required
+  PHP version is now 7.0.0!
+  (@thekid)
+
 ## 1.0.1 / 2019-11-30
 
 * Made compatible with XP 10 - @thekid

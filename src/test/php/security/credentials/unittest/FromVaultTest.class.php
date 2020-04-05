@@ -76,13 +76,13 @@ class FromVaultTest extends AbstractSecretsTest {
     new FromVault();
   }
 
-  #[@test, @values(map= [
+  #[@test, @values(['map' => [
   #  '/'             => '/',
   #  '/vendor/name'  => '/vendor/name/',
   #  '/vendor/name/' => '/vendor/name/',
   #  'vendor/name'   => '/vendor/name/',
   #  'vendor/name/'  => '/vendor/name/',
-  #])]
+  #]])]
   public function using_group($group, $path) {
     $endpoint= newinstance(Endpoint::class, ['http://test'], [
       'execute' => function(RestRequest $request) use(&$requested) {

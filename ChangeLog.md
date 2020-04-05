@@ -3,13 +3,11 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
-## 2.0.1 / 2020-04-05
-
-* Implemented RFC #335: Remove deprecated key/value pair annotation syntax
-  (@thekid)
-
 ## 2.0.0 / 2019-12-01
 
+* Implemented xp-framework/rfc#335: Remove deprecated key/value pair
+  annotation syntax
+  (@thekid)
 * Implemented xp-framework/rfc#334: Drop PHP 5.6. The minimum required
   PHP version is now 7.0.0!
   (@thekid)

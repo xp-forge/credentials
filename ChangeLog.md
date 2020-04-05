@@ -3,7 +3,7 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
-## 2.0.0 / 2019-12-01
+## 2.0.0 / 2020-04-05
 
 * Implemented xp-framework/rfc#335: Remove deprecated key/value pair
   annotation syntax

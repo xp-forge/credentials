@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 2.0.1 / 2020-04-10
+
+* Made compatible with `xp-forge/rest-client` 2.0.0 - @thekid
+
 ## 2.0.0 / 2020-04-05
 
 * Implemented xp-framework/rfc#335: Remove deprecated key/value pair

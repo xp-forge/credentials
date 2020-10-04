@@ -2,6 +2,7 @@
 
 use lang\ClassLoader;
 use security\credentials\FromKeePass;
+use unittest\{Test, Values};
 use util\Secret;
 
 class FromKeePassTest extends AbstractSecretsTest {
@@ -15,12 +16,12 @@ class FromKeePassTest extends AbstractSecretsTest {
     );
   }
 
-  #[@test, @values(['xp/app', '/xp/app', '/xp/app/'])]
+  #[Test, Values(['xp/app', '/xp/app', '/xp/app/'])]
   public function using_group($group) {
     $this->assertCredential($this->newFixture($group), 'test', 'mysql');
   }
 
-  #[@test, @values(['xp/app', '/xp/app', '/xp/app/'])]
+  #[Test, Values(['xp/app', '/xp/app', '/xp/app/'])]
   public function all_in_group($group) {
     $this->assertCredentials($this->newFixture($group), ['mysql' => 'test'], '*');
   }

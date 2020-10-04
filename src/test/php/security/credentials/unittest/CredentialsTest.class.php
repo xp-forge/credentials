@@ -1,14 +1,13 @@
 <?php namespace security\credentials\unittest;
 
-use lang\ElementNotFoundException;
-use lang\IllegalArgumentException;
-use security\credentials\Credentials;
-use security\credentials\Secrets;
+use lang\{ElementNotFoundException, IllegalArgumentException};
+use security\credentials\{Credentials, Secrets};
+use unittest\{Expect, Test, Values};
 use util\Secret;
 
 class CredentialsTest extends \unittest\TestCase {
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new Credentials(newinstance(Secrets::class, [], [
       'open'  => function() { },
@@ -18,12 +17,12 @@ class CredentialsTest extends \unittest\TestCase {
     ]));
   }
 
-  #[@test, @expect(IllegalArgumentException::class)]
+  #[Test, Expect(IllegalArgumentException::class)]
   public function cannot_create_without_secrets() {
     new Credentials();
   }
 
-  #[@test]
+  #[Test]
   public function credential() {
     $secret= new Secret('test');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
@@ -36,7 +35,7 @@ class CredentialsTest extends \unittest\TestCase {
     $this->assertEquals($secret, $credentials->named('test'));
   }
 
-  #[@test, @values(['test', '*'])]
+  #[Test, Values(['test', '*'])]
   public function credentials($pattern) {
     $secret= new Secret('test');
     $credentials= new Credentials(newinstance(Secrets::class, [], [
@@ -49,7 +48,7 @@ class CredentialsTest extends \unittest\TestCase {
     $this->assertEquals(['test' => $secret], iterator_to_array($credentials->all($pattern)));
   }
 
-  #[@test, @expect(ElementNotFoundException::class)]
+  #[Test, Expect(ElementNotFoundException::class)]
   public function non_existant_credential() {
     $credentials= new Credentials(newinstance(Secrets::class, [], [
       'open'  => function() { return $this; },
@@ -61,7 +60,7 @@ class CredentialsTest extends \unittest\TestCase {
     $credentials->named('test');
   }
 
-  #[@test]
+  #[Test]
   public function explicit_open() {
     $opened= false;
     $credentials= new Credentials(newinstance(Secrets::class, [], [
@@ -75,7 +74,7 @@ class CredentialsTest extends \unittest\TestCase {
     $this->assertEquals(true, $opened);
   }
 
-  #[@test]
+  #[Test]
   public function secrets_not_opened_until_actually_needed() {
     $secret= new Secret('test');
     $credentials= new Credentials(
@@ -96,7 +95,7 @@ class CredentialsTest extends \unittest\TestCase {
     $this->assertEquals($secret, $credentials->named('test'));
   }
 
-  #[@test]
+  #[Test]
   public function secrets_opened_during_all() {
     $credentials= new Credentials(
       newinstance(Secrets::class, [], [

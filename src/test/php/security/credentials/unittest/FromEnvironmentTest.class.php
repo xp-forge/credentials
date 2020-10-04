@@ -2,6 +2,7 @@
 
 use lang\Environment;
 use security\credentials\FromEnvironment;
+use unittest\Test;
 use util\Secret;
 
 class FromEnvironmentTest extends AbstractSecretsTest {
@@ -18,12 +19,12 @@ class FromEnvironmentTest extends AbstractSecretsTest {
     ]);
   }
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new FromEnvironment();
   }
 
-  #[@test]
+  #[Test]
   public function removed_after_use() {
     $before= Environment::variable('TEST_DB_PASSWORD', null);
 

@@ -1,10 +1,10 @@
 <?php namespace security\credentials\unittest;
 
-use security\credentials\FromStream;
-use util\Secret;
 use io\File;
-use io\streams\MemoryInputStream;
-use io\streams\TextReader;
+use io\streams\{MemoryInputStream, TextReader};
+use security\credentials\FromStream;
+use unittest\{Test, Values};
+use util\Secret;
 
 class FromStreamTest extends AbstractSecretsTest {
 
@@ -18,12 +18,15 @@ class FromStreamTest extends AbstractSecretsTest {
     ));
   }
 
-  #[@test, @values([
-  #  [new TextReader(new MemoryInputStream("")), "readers"],
-  #  [new MemoryInputStream(""), "streams"],
-  #  [new File("filename"), "files"],
-  #  ["filename", "filenames"]
-  #])]
+  /** @return iterable */
+  private function streams() {
+    yield [new TextReader(new MemoryInputStream('')), 'readers'];
+    yield [new MemoryInputStream(''), 'streams'];
+    yield [new File('filename'), 'files'];
+    yield ['filename', 'filenames'];
+  }
+
+  #[Test, Values('streams')]
   public function can_create($arg, $from) {
     new FromStream($arg);
   }

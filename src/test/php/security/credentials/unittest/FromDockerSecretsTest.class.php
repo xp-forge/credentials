@@ -1,10 +1,10 @@
 <?php namespace security\credentials\unittest;
 
-use security\credentials\FromDockerSecrets;
-use util\Secret;
+use io\{Folder, Path};
 use lang\Environment;
-use io\Folder;
-use io\Path;
+use security\credentials\FromDockerSecrets;
+use unittest\Test;
+use util\Secret;
 
 class FromDockerSecretsTest extends AbstractSecretsTest {
 
@@ -34,24 +34,24 @@ class FromDockerSecretsTest extends AbstractSecretsTest {
     $this->path->exists() && $this->path->unlink();
   }
 
-  #[@test]
+  #[Test]
   public function path() {
     $path= new Path('.');
     $this->assertEquals($path, (new FromDockerSecrets($path))->path());
   }
 
-  #[@test]
+  #[Test]
   public function string_path() {
     $this->assertEquals(new Path('.'), (new FromDockerSecrets('.'))->path());
   }
 
-  #[@test]
+  #[Test]
   public function folder_path() {
     $folder= new Folder('.');
     $this->assertEquals(new Path($folder->getURI()), (new FromDockerSecrets($folder))->path());
   }
 
-  #[@test]
+  #[Test]
   public function default_path() {
     $this->assertNotEquals(null, (new FromDockerSecrets())->path());
   }

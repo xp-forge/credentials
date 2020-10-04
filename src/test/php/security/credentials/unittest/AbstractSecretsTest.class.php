@@ -1,6 +1,8 @@
 <?php namespace security\credentials\unittest;
 
-abstract class AbstractSecretsTest extends \unittest\TestCase {
+use unittest\{Test, TestCase, Values};
+
+abstract class AbstractSecretsTest extends TestCase {
 
   /** @return security.vaults.Secrets */
   protected abstract function newFixture();
@@ -44,7 +46,7 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
     }
   }
 
-  #[@test]
+  #[Test]
   public function open_and_close_can_be_called_twice() {
     $fixture= $this->newFixture();
     $fixture->open();
@@ -54,25 +56,17 @@ abstract class AbstractSecretsTest extends \unittest\TestCase {
     $fixture->close();
   }
 
-  #[@test, @values([
-  #  ['test_db_password', 'db'],
-  #  ['test_ldap_password', 'ldap'],
-  #  ['prod_master_key', 'master']
-  #])]
+  #[Test, Values([['test_db_password', 'db'], ['test_ldap_password', 'ldap'], ['prod_master_key', 'master']])]
   public function credential($name, $result) {
     $this->assertCredential($this->newFixture(), $result, $name);
   }
 
-  #[@test, @values([
-  #  ['test_*', ['test_db_password' => 'db', 'test_ldap_password' => 'ldap']],
-  #  ['prod_*', ['prod_master_key' => 'master']],
-  #  ['non_existant_*', []]
-  #])]
+  #[Test, Values([['test_*', ['test_db_password' => 'db', 'test_ldap_password' => 'ldap']], ['prod_*', ['prod_master_key' => 'master']], ['non_existant_*', []]])]
   public function credentials($filter, $result) {
     $this->assertCredentials($this->newFixture(), $result, $filter);
   }
 
-  #[@test]
+  #[Test]
   public function non_existant_credential() {
     $fixture= $this->newFixture();
     $fixture->open();

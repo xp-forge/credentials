@@ -1,10 +1,9 @@
 <?php namespace security\credentials\unittest;
 
-use io\File;
-use io\TempFile;
-use io\streams\MemoryInputStream;
-use io\streams\Streams;
+use io\streams\{MemoryInputStream, Streams};
+use io\{File, TempFile};
 use security\credentials\FromFile;
+use unittest\{Test, Values};
 
 class FromFileTest extends AbstractSecretsTest {
 
@@ -18,15 +17,18 @@ class FromFileTest extends AbstractSecretsTest {
     )));
   }
 
-  #[@test, @values([
-  #  [new File("filename"), "files"],
-  #  ["filename", "filenames"]
-  #])]
+  /** @return iterable */
+  private function files() {
+    yield [new File('filename'), 'files'];
+    yield ['filename', 'filenames'];
+  }
+
+  #[Test, Values('files')]
   public function can_create($arg, $from) {
     new FromFile($arg);
   }
 
-  #[@test]
+  #[Test]
   public function file_kept_by_default() {
     $file= new TempFile($this->name);
     $fixture= new FromFile($file);
@@ -35,7 +37,7 @@ class FromFileTest extends AbstractSecretsTest {
     $this->assertTrue($file->exists());
   }
 
-  #[@test]
+  #[Test]
   public function can_optionally_be_removed_after_close() {
     $file= new TempFile($this->name);
     $fixture= new FromFile($file, FromFile::REMOVE);
@@ -44,7 +46,7 @@ class FromFileTest extends AbstractSecretsTest {
     $this->assertFalse($file->exists());
   }
 
-  #[@test]
+  #[Test]
   public function byte_escape_sequence() {
     $this->assertCredential($this->newFixture(), "S\xa7T", 'cloud_secret');
   }

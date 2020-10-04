@@ -5,10 +5,9 @@ use lang\FormatException;
 use peer\URL;
 use peer\http\HttpResponse;
 use security\credentials\FromVault;
+use unittest\{Expect, Test, Values};
 use util\Secret;
-use webservices\rest\Endpoint;
-use webservices\rest\RestRequest;
-use webservices\rest\RestResponse;
+use webservices\rest\{Endpoint, RestRequest, RestResponse};
 
 class FromVaultTest extends AbstractSecretsTest {
 
@@ -45,44 +44,42 @@ class FromVaultTest extends AbstractSecretsTest {
     ]));
   }
 
-  #[@test, @values([
-  #  ['http://vault:8200'],
-  #  [new URL('http://vault:8200')],
-  #  [new Endpoint('http://vault:8200')]
-  #])]
+  /** @return iterable */
+  private function endpoints() {
+    yield ['http://vault:8200'];
+    yield [new URL('http://vault:8200')];
+    yield [new Endpoint('http://vault:8200')];
+  }
+
+
+  #[Test, Values('endpoints')]
   public function can_create_with($arg) {
     new FromVault($arg);
   }
 
-  #[@test, @values(['secret', new Secret('for-vault')])]
+  #[Test, Values(eval: '["secret", new Secret("for-vault")]')]
   public function can_create_with_token($token) {
     new FromVault('http://vault:8200', $token);
   }
 
-  #[@test]
+  #[Test]
   public function can_create_with_token_and_group() {
     new FromVault('http://vault:8200', 'SECRET_VAULT_TOKEN', '/vendor/name');
   }
 
-  #[@test]
+  #[Test]
   public function uses_environment_variable_by_default() {
     putenv('VAULT_ADDR=http://127.0.0.1:8200');
     new FromVault();
   }
 
-  #[@test, @expect(FormatException::class)]
+  #[Test, Expect(FormatException::class)]
   public function fails_if_environment_variable_missing() {
     putenv('VAULT_ADDR=');
     new FromVault();
   }
 
-  #[@test, @values(['map' => [
-  #  '/'             => '/',
-  #  '/vendor/name'  => '/vendor/name/',
-  #  '/vendor/name/' => '/vendor/name/',
-  #  'vendor/name'   => '/vendor/name/',
-  #  'vendor/name/'  => '/vendor/name/',
-  #]])]
+  #[Test, Values(['map' => ['/'             => '/', '/vendor/name'  => '/vendor/name/', '/vendor/name/' => '/vendor/name/', 'vendor/name'   => '/vendor/name/', 'vendor/name/'  => '/vendor/name/',]])]
   public function using_group($group, $path) {
     $endpoint= newinstance(Endpoint::class, ['http://test'], [
       'execute' => function(RestRequest $request) use(&$requested) {

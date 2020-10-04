@@ -1,15 +1,13 @@
 <?php namespace security\credentials\unittest;
 
 use io\streams\MemoryInputStream;
-use security\credentials\Credentials;
-use security\credentials\Secrets;
-use unittest\TestCase;
-use util\Properties;
-use util\Secret;
+use security\credentials\{Credentials, Secrets};
+use unittest\{Test, TestCase};
+use util\{Properties, Secret};
 
 class PropertiesTest extends TestCase {
 
-  #[@test]
+  #[Test]
   public function expanding() {
     $secret= new Secret('Expanded!');
     $credentials= new Credentials(newinstance(Secrets::class, [], [

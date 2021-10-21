@@ -3,6 +3,11 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 2.0.2 / 2020-10-21
+
+* Made library compatible with XP 11, `xp-forge/rest-client` version 3.0.0
+  (@thekid)
+
 ## 2.0.1 / 2020-04-10
 
 * Made compatible with `xp-forge/rest-client` 2.0.0 - @thekid

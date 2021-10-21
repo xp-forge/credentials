@@ -43,7 +43,7 @@ class FromEnvironment implements Secrets {
    */
   public function all($pattern) {
     $match= strtoupper(substr($pattern, 0, strrpos($pattern, '*')));
-    foreach ($_ENV as $name => $value) {
+    foreach (Environment::variables() as $name => $value) {
       if (0 === strncmp($name, $match, strlen($match))) yield strtolower($name) => new Secret($value);
     }
   }

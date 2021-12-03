@@ -38,7 +38,7 @@ class FromVault implements Secrets {
    *
    * @param  string $name
    * @return util.Secret
-   * @throws lang.IllegalAccessException if vault backend fails
+   * @throws lang.IllegalAccessException if vault is not accessible
    */
   public function named($name) {
     $r= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
@@ -60,6 +60,7 @@ class FromVault implements Secrets {
    *
    * @param  string $pattern Name with * meaning any character except a dot
    * @return iterable
+   * @throws lang.IllegalAccessException if vault is not accessible
    */
   public function all($pattern) {
     $r= $this->endpoint->resource('/v1/secret/'.$this->group)->get();

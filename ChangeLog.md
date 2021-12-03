@@ -8,7 +8,7 @@ Credentials change log
 * Made library compatible with `xp-forge/rest-client` version 4.0.0
   (@thekid)
 
-## 2.0.2 / 2020-10-21
+## 2.0.2 / 2021-10-21
 
 * Made library compatible with XP 11, `xp-forge/rest-client` version 3.0.0
   (@thekid)

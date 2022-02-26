@@ -5,7 +5,7 @@ use io\File;
 class FromFile extends FromStream {
   const REMOVE = true;
 
-  private $remote= false;
+  private $remove;
 
   /**
    * Uses file as secret storage

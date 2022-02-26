@@ -6,7 +6,7 @@ use io\File;
 use util\Secret;
 
 class FromKeePass implements Secrets {
-  private $file, $key;
+  private $file, $key, $group;
   private $db= null;
 
   /**

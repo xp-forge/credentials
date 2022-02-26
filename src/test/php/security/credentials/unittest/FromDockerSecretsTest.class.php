@@ -7,6 +7,7 @@ use unittest\Test;
 use util\Secret;
 
 class FromDockerSecretsTest extends AbstractSecretsTest {
+  private $path;
 
   /** @return security.credentials.Secrets */
   protected function newFixture() {

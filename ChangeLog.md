@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 2.1.0 / 2022-02-26
+
+* Merged PR #10: Throw exceptions if vault is down - @thekid
+
 ## 2.0.4 / 2022-02-26
 
 * Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid

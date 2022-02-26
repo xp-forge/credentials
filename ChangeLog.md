@@ -3,6 +3,12 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 2.0.4 / 2022-02-26
+
+* Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
+* Made library compatible with `xp-forge/rest-client` version 5.0.0
+  (@thekid)
+
 ## 2.0.3 / 2021-12-03
 
 * Made library compatible with `xp-forge/rest-client` version 4.0.0

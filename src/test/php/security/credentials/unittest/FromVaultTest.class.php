@@ -1,7 +1,7 @@
 <?php namespace security\credentials\unittest;
 
 use io\streams\MemoryInputStream;
-use lang\FormatException;
+use lang\{FormatException, IllegalAccessException};
 use peer\URL;
 use peer\http\HttpResponse;
 use security\credentials\FromVault;
@@ -77,6 +77,32 @@ class FromVaultTest extends AbstractSecretsTest {
   public function fails_if_environment_variable_missing() {
     putenv('VAULT_ADDR=');
     new FromVault();
+  }
+
+  #[Test, Expect(IllegalAccessException::class)]
+  public function named_on_vault_error() {
+    $endpoint= newinstance(Endpoint::class, ['http://test'], [
+      'execute' => function(RestRequest $request) {
+        return newinstance(RestResponse::class, [503, 'Service unavailable'], [
+          'error' => function($type= null) { return 'Database error'; }
+        ]);
+      }
+    ]);
+
+    (new FromVault($endpoint))->named('credential');
+  }
+
+  #[Test, Expect(IllegalAccessException::class)]
+  public function all_on_vault_error() {
+    $endpoint= newinstance(Endpoint::class, ['http://test'], [
+      'execute' => function(RestRequest $request) {
+        return newinstance(RestResponse::class, [503, 'Service unavailable'], [
+          'error' => function($type= null) { return 'Database error'; }
+        ]);
+      }
+    ]);
+
+    iterator_count((new FromVault($endpoint))->all('group*'));
   }
 
   #[Test, Values(['map' => ['/'             => '/', '/vendor/name'  => '/vendor/name/', '/vendor/name/' => '/vendor/name/', 'vendor/name'   => '/vendor/name/', 'vendor/name/'  => '/vendor/name/',]])]

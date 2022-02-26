@@ -1,5 +1,6 @@
 <?php namespace security\credentials;
 
+use lang\IllegalAccessException;
 use util\Secret;
 use webservices\rest\Endpoint;
 
@@ -37,14 +38,20 @@ class FromVault implements Secrets {
    *
    * @param  string $name
    * @return util.Secret
+   * @throws lang.IllegalAccessException if vault is not accessible
    */
   public function named($name) {
-    $response= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
-    if ($response->status() < 400) {
-      $data= $response->value()['data'];
-      return isset($data[$name]) ? new Secret($data[$name]) : null;
-    } else {
-      return null;
+    $r= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
+    switch ($r->status()) {
+      case 200:
+        $data= $r->value()['data'];
+        return isset($data[$name]) ? new Secret($data[$name]) : null;
+
+      case 404:
+        return null;
+
+      default:
+        throw new IllegalAccessException('Unexpected '.$r->status().': '.$r->error());
     }
   }
 
@@ -53,14 +60,23 @@ class FromVault implements Secrets {
    *
    * @param  string $pattern Name with * meaning any character except a dot
    * @return iterable
+   * @throws lang.IllegalAccessException if vault is not accessible
    */
   public function all($pattern) {
-    $response= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
-    if ($response->status() < 400) {
-      $match= substr($pattern, 0, strrpos($pattern, '*'));
-      foreach ($response->value()['data'] as $name => $value) {
-        if (0 === strncmp($name, $match, strlen($match))) yield $name => new Secret($value);
-      }
+    $r= $this->endpoint->resource('/v1/secret/'.$this->group)->get();
+    switch ($r->status()) {
+      case 200:
+        $match= substr($pattern, 0, strrpos($pattern, '*'));
+        foreach ($r->value()['data'] as $name => $value) {
+          if (0 === strncmp($name, $match, strlen($match))) yield $name => new Secret($value);
+        }
+        return;
+
+      case 404:
+        return;
+
+      default:
+        throw new IllegalAccessException('Unexpected '.$r->status().': '.$r->error());
     }
   }
 

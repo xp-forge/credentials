@@ -1,11 +1,11 @@
 <?php namespace security\credentials\unittest;
 
-use unittest\{Test, TestCase, Values};
+use test\{Assert, Test, Values};
 
-abstract class AbstractSecretsTest extends TestCase {
+abstract class AbstractSecretsTest {
 
   /** @return security.vaults.Secrets */
-  protected abstract function newFixture();
+  protected abstract function newFixture($name);
 
   /**
    * Assertion helper
@@ -19,7 +19,7 @@ abstract class AbstractSecretsTest extends TestCase {
   protected function assertCredential($fixture, $expected, $name) {
     $fixture->open();
     try {
-      $this->assertEquals($expected, $fixture->named($name)->reveal());
+      Assert::equals($expected, $fixture->named($name)->reveal());
     } finally {
       $fixture->close();
     }
@@ -37,7 +37,7 @@ abstract class AbstractSecretsTest extends TestCase {
   protected function assertCredentials($fixture, $expected, $pattern) {
     $fixture->open();
     try {
-      $this->assertEquals($expected, array_map(
+      Assert::equals($expected, array_map(
         function($s) { return $s->reveal(); },
         iterator_to_array($fixture->all($pattern))
       ));
@@ -48,7 +48,7 @@ abstract class AbstractSecretsTest extends TestCase {
 
   #[Test]
   public function open_and_close_can_be_called_twice() {
-    $fixture= $this->newFixture();
+    $fixture= $this->newFixture(__FUNCTION__);
     $fixture->open();
     $fixture->open();
 
@@ -58,20 +58,20 @@ abstract class AbstractSecretsTest extends TestCase {
 
   #[Test, Values([['test_db_password', 'db'], ['test_ldap_password', 'ldap'], ['prod_master_key', 'master']])]
   public function credential($name, $result) {
-    $this->assertCredential($this->newFixture(), $result, $name);
+    $this->assertCredential($this->newFixture(__FUNCTION__), $result, $name);
   }
 
   #[Test, Values([['test_*', ['test_db_password' => 'db', 'test_ldap_password' => 'ldap']], ['prod_*', ['prod_master_key' => 'master']], ['non_existant_*', []]])]
   public function credentials($filter, $result) {
-    $this->assertCredentials($this->newFixture(), $result, $filter);
+    $this->assertCredentials($this->newFixture(__FUNCTION__), $result, $filter);
   }
 
   #[Test]
   public function non_existant_credential() {
-    $fixture= $this->newFixture();
+    $fixture= $this->newFixture(__FUNCTION__);
     $fixture->open();
     try {
-      $this->assertNull($fixture->named('non_existant_value'));
+      Assert::null($fixture->named('non_existant_value'));
     } finally {
       $fixture->close();
     }

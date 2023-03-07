@@ -2,21 +2,19 @@
 
 use lang\Environment;
 use security\credentials\FromEnvironment;
-use unittest\Test;
+use test\{Assert, Test};
 use util\Secret;
 
 class FromEnvironmentTest extends AbstractSecretsTest {
 
   /** @return security.vault.Secrets */
-  protected function newFixture() { return new FromEnvironment(); }
-
-  /** @return void */
-  public function setUp() {
+  protected function newFixture($name) {
     Environment::export([
       'TEST_DB_PASSWORD'   => 'db',
       'TEST_LDAP_PASSWORD' => 'ldap',
       'PROD_MASTER_KEY'    => 'master',
     ]);
+    return new FromEnvironment();
   }
 
   #[Test]
@@ -26,6 +24,7 @@ class FromEnvironmentTest extends AbstractSecretsTest {
 
   #[Test]
   public function removed_after_use() {
+    Environment::export(['TEST_DB_PASSWORD' => 'db']);
     $before= Environment::variable('TEST_DB_PASSWORD', null);
 
     with (new FromEnvironment(FromEnvironment::REMOVE), function($fixture) {
@@ -35,6 +34,6 @@ class FromEnvironmentTest extends AbstractSecretsTest {
     });
 
     $after= Environment::variable('TEST_DB_PASSWORD', null);
-    $this->assertEquals(['db', null], [$before, $after]);
+    Assert::equals(['db', null], [$before, $after]);
   }
 }

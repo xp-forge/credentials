@@ -2,10 +2,11 @@
 
 use lang\{ElementNotFoundException, IllegalArgumentException};
 use security\credentials\{Credentials, Secrets};
-use unittest\{Expect, Test, Values};
+use test\Assert;
+use test\{Expect, Test, Values};
 use util\Secret;
 
-class CredentialsTest extends \unittest\TestCase {
+class CredentialsTest {
 
   #[Test]
   public function can_create() {
@@ -32,7 +33,7 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $this->assertEquals($secret, $credentials->named('test'));
+    Assert::equals($secret, $credentials->named('test'));
   }
 
   #[Test, Values(['test', '*'])]
@@ -45,7 +46,7 @@ class CredentialsTest extends \unittest\TestCase {
       'close' => function() { }
     ]));
 
-    $this->assertEquals(['test' => $secret], iterator_to_array($credentials->all($pattern)));
+    Assert::equals(['test' => $secret], iterator_to_array($credentials->all($pattern)));
   }
 
   #[Test, Expect(ElementNotFoundException::class)]
@@ -71,7 +72,7 @@ class CredentialsTest extends \unittest\TestCase {
     ]));
 
     $credentials->open();
-    $this->assertEquals(true, $opened);
+    Assert::equals(true, $opened);
   }
 
   #[Test]
@@ -92,7 +93,7 @@ class CredentialsTest extends \unittest\TestCase {
       ])
     );
 
-    $this->assertEquals($secret, $credentials->named('test'));
+    Assert::equals($secret, $credentials->named('test'));
   }
 
   #[Test]
@@ -114,6 +115,6 @@ class CredentialsTest extends \unittest\TestCase {
 
     $opened= [];
     iterator_count($credentials->all('*'));
-    $this->assertEquals(['a', 'b'], $opened);
+    Assert::equals(['a', 'b'], $opened);
   }
 }

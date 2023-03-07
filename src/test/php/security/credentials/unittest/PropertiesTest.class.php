@@ -2,10 +2,11 @@
 
 use io\streams\MemoryInputStream;
 use security\credentials\{Credentials, Secrets};
-use unittest\{Test, TestCase};
+use test\Assert;
+use test\{Test, TestCase};
 use util\{Properties, Secret};
 
-class PropertiesTest extends TestCase {
+class PropertiesTest {
 
   #[Test]
   public function expanding() {
@@ -20,6 +21,6 @@ class PropertiesTest extends TestCase {
     $prop= $credentials->expanding(new Properties());
     $prop->load(new MemoryInputStream('pass=${secret.test}'));
 
-    $this->assertEquals($secret->reveal(), $prop->readString(null, 'pass'));
+    Assert::equals($secret->reveal(), $prop->readString(null, 'pass'));
   }
 }

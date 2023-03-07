@@ -3,13 +3,14 @@
 use io\File;
 use io\streams\{MemoryInputStream, TextReader};
 use security\credentials\FromStream;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 use util\Secret;
 
 class FromStreamTest extends AbstractSecretsTest {
 
   /** @return security.vault.Secrets */
-  protected function newFixture() {
+  protected function newFixture($name) {
     return new FromStream(new MemoryInputStream(
       "test_db_password=db\n".
       "test_ldap_password=ldap\n".
@@ -26,7 +27,7 @@ class FromStreamTest extends AbstractSecretsTest {
     yield ['filename', 'filenames'];
   }
 
-  #[Test, Values('streams')]
+  #[Test, Values(from: 'streams')]
   public function can_create($arg, $from) {
     new FromStream($arg);
   }

@@ -5,7 +5,8 @@ use lang\{FormatException, IllegalAccessException};
 use peer\URL;
 use peer\http\HttpResponse;
 use security\credentials\FromVault;
-use unittest\{Expect, Test, Values};
+use test\Assert;
+use test\{Expect, Test, Values};
 use util\Secret;
 use webservices\rest\{Endpoint, RestRequest, RestResponse};
 
@@ -28,8 +29,8 @@ class FromVaultTest extends AbstractSecretsTest {
   ];
 
   /** @return security.vault.Secrets */
-  protected function newFixture() {
-    $answers= &self::$answers[$this->getName()];
+  protected function newFixture($name) {
+    $answers= &self::$answers[$name];
     return new FromVault(newinstance(Endpoint::class, ['http://test'], [
       'execute' => function(RestRequest $request) use(&$answers) {
         $answer= array_shift($answers);
@@ -52,7 +53,7 @@ class FromVaultTest extends AbstractSecretsTest {
   }
 
 
-  #[Test, Values('endpoints')]
+  #[Test, Values(from: 'endpoints')]
   public function can_create_with($arg) {
     new FromVault($arg);
   }
@@ -105,7 +106,7 @@ class FromVaultTest extends AbstractSecretsTest {
     iterator_count((new FromVault($endpoint))->all('group*'));
   }
 
-  #[Test, Values(['map' => ['/'             => '/', '/vendor/name'  => '/vendor/name/', '/vendor/name/' => '/vendor/name/', 'vendor/name'   => '/vendor/name/', 'vendor/name/'  => '/vendor/name/',]])]
+  #[Test, Values([['/', '/'], ['/vendor/name', '/vendor/name/'], ['/vendor/name/', '/vendor/name/'], ['vendor/name', '/vendor/name/'], ['vendor/name/', '/vendor/name/']])]
   public function using_group($group, $path) {
     $endpoint= newinstance(Endpoint::class, ['http://test'], [
       'execute' => function(RestRequest $request) use(&$requested) {
@@ -115,6 +116,6 @@ class FromVaultTest extends AbstractSecretsTest {
     ]);
 
     (new FromVault($endpoint, 'SECRET_VAULT_TOKEN', $group))->named('credential');
-    $this->assertEquals('/v1/secret'.$path, $requested);
+    Assert::equals('/v1/secret'.$path, $requested);
   }
 }

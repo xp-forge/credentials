@@ -3,12 +3,13 @@
 use io\streams\{MemoryInputStream, Streams};
 use io\{File, TempFile};
 use security\credentials\FromFile;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class FromFileTest extends AbstractSecretsTest {
 
   /** @return security.vault.Secrets */
-  protected function newFixture() {
+  protected function newFixture($name) {
     return new FromFile(Streams::readableFd(new MemoryInputStream(
       "TEST_DB_PASSWORD=db\n".
       "TEST_LDAP_PASSWORD=ldap\n".
@@ -23,7 +24,7 @@ class FromFileTest extends AbstractSecretsTest {
     yield ['filename', 'filenames'];
   }
 
-  #[Test, Values('files')]
+  #[Test, Values(from: 'files')]
   public function can_create($arg, $from) {
     new FromFile($arg);
   }
@@ -34,7 +35,7 @@ class FromFileTest extends AbstractSecretsTest {
     $fixture= new FromFile($file);
     $fixture->open();
     $fixture->close();
-    $this->assertTrue($file->exists());
+    Assert::true($file->exists());
   }
 
   #[Test]
@@ -43,11 +44,11 @@ class FromFileTest extends AbstractSecretsTest {
     $fixture= new FromFile($file, FromFile::REMOVE);
     $fixture->open();
     $fixture->close();
-    $this->assertFalse($file->exists());
+    Assert::false($file->exists());
   }
 
   #[Test]
   public function byte_escape_sequence() {
-    $this->assertCredential($this->newFixture(), "S\xa7T", 'cloud_secret');
+    $this->assertCredential($this->newFixture(__FUNCTION__), "S\xa7T", 'cloud_secret');
   }
 }

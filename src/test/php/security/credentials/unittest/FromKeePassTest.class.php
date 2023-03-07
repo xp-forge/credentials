@@ -2,13 +2,14 @@
 
 use lang\ClassLoader;
 use security\credentials\FromKeePass;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 use util\Secret;
 
 class FromKeePassTest extends AbstractSecretsTest {
 
   /** @return security.vault.Secrets */
-  protected function newFixture($group= '/') {
+  protected function newFixture($name, $group= '/') {
     return new FromKeePass(
       ClassLoader::getDefault()->getResourceAsStream('keepass/unittest.kdbx'),
       new Secret('test'),
@@ -18,11 +19,11 @@ class FromKeePassTest extends AbstractSecretsTest {
 
   #[Test, Values(['xp/app', '/xp/app', '/xp/app/'])]
   public function using_group($group) {
-    $this->assertCredential($this->newFixture($group), 'test', 'mysql');
+    $this->assertCredential($this->newFixture(__FUNCTION__, $group), 'test', 'mysql');
   }
 
   #[Test, Values(['xp/app', '/xp/app', '/xp/app/'])]
   public function all_in_group($group) {
-    $this->assertCredentials($this->newFixture($group), ['mysql' => 'test'], '*');
+    $this->assertCredentials($this->newFixture(__FUNCTION__, $group), ['mysql' => 'test'], '*');
   }
 }

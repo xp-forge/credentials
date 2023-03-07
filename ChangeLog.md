@@ -3,6 +3,8 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #11: Migrate to new testing library - @thekid
+
 ## 2.1.0 / 2022-02-26
 
 * Merged PR #10: Throw exceptions if vault is down - @thekid

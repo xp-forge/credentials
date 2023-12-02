@@ -3,8 +3,7 @@
 use io\streams\{MemoryInputStream, Streams};
 use io\{File, TempFile};
 use security\credentials\FromFile;
-use test\Assert;
-use test\{Test, Values};
+use test\{Assert, Test, Values};
 
 class FromFileTest extends AbstractSecretsTest {
 
@@ -31,7 +30,7 @@ class FromFileTest extends AbstractSecretsTest {
 
   #[Test]
   public function file_kept_by_default() {
-    $file= new TempFile($this->name);
+    $file= new TempFile('secrets');
     $fixture= new FromFile($file);
     $fixture->open();
     $fixture->close();
@@ -40,7 +39,7 @@ class FromFileTest extends AbstractSecretsTest {
 
   #[Test]
   public function can_optionally_be_removed_after_close() {
-    $file= new TempFile($this->name);
+    $file= new TempFile('secrets');
     $fixture= new FromFile($file, FromFile::REMOVE);
     $fixture->open();
     $fixture->close();

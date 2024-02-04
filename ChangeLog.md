@@ -3,6 +3,9 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 3.0.0 / 2024-02-04
+
+* Implemented xp-framework/rfc#341: Drop XP <= 9 compatibility - @thekid
 * Merged PR #11: Migrate to new testing library - @thekid
 
 ## 2.1.0 / 2022-02-26

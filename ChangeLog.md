@@ -5,6 +5,8 @@ Credentials change log
 
 ## 3.0.0 / 2024-02-04
 
+* Made compatible with https://github.com/xp-forge/keepass version 2.0
+  (@thekid)
 * Implemented xp-framework/rfc#341: Drop XP <= 9 compatibility - @thekid
 * Merged PR #11: Migrate to new testing library - @thekid
 

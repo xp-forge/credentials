@@ -3,6 +3,10 @@ Credentials change log
 
 ## ?.?.? / ????-??-??
 
+## 3.1.0 / 2024-03-24
+
+* Made compatible with XP 12 - @thekid
+
 ## 3.0.0 / 2024-02-04
 
 * Made compatible with https://github.com/xp-forge/keepass version 2.0
